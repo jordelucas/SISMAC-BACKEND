@@ -4,4 +4,4 @@ import "./database";
 
 const app = express();
 
-app.listen(8080, () => console.log("Funcionando"));
+app.listen(8080, () => console.log("Funcionando na porta 8080"));
