@@ -1,7 +1,11 @@
 import 'reflect-metadata';
 import express from 'express';
 import "./database";
+import { router } from './routes';
 
 const app = express();
 
-app.listen(8080, () => console.log("Funcionando"));
+app.use(express.json());
+app.use(router);
+
+app.listen(8080, () => console.log("Funcionando na porta 8080"));
