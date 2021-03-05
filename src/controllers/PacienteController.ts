@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import { Paciente } from "../models/Paciente";
+import { getCustomRepository } from "typeorm";
+import { PacientesRepository } from "../repositories/PacientesRepository";
 
 class PacienteController {
     async create(request: Request, response: Response) {
@@ -16,7 +16,7 @@ class PacienteController {
             telefone
         } = request.body;
 
-        const pacientesRepository = getRepository(Paciente);
+        const pacientesRepository = getCustomRepository(PacientesRepository);
 
         const paciente = pacientesRepository.create({
             cpf,
@@ -30,12 +30,10 @@ class PacienteController {
             telefone
         })
 
-        console.log(paciente.dtNascimento);
-
         await pacientesRepository.save(paciente);
 
         return response.json(paciente);
     }
 }
 
-export { PacienteController }
+export { PacienteController };
