@@ -21,9 +21,28 @@ describe("Pacientes", () => {
             complemento: "casa",
             dtNascimento: "1998-10-31",
             telefone: "8494984499"
-        })
+        });
 
         expect(response.status).toBe(201);
+        expect(response.body).toHaveProperty("id");
     });
+
+    it("Should be able to get all Pacientes", async () => {
+        await request(app).post("/pacientes").send({
+            cpf: "1231234",
+            nsus: "2222222",
+            nome: "clevi",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const response = await request(app).get("/pacientes");
+
+        expect(response.body.length).toBe(9);
+    })
 
 });
