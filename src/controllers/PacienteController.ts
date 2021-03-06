@@ -32,7 +32,7 @@ class PacienteController {
 
         await pacientesRepository.save(paciente);
 
-        return response.json(paciente);
+        return response.status(201).json(paciente);
     }
 }
 
