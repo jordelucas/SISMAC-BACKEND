@@ -18,6 +18,19 @@ class PacienteController {
 
         const pacientesRepository = getCustomRepository(PacientesRepository);
 
+        const results = await pacientesRepository.find({
+            where: [
+                { cpf: cpf },
+                { nsus: nsus }
+            ]
+        })
+
+        if (results.length != 0) {
+            return response.status(400).json({
+                error: "Paciente already exists!",
+            })
+        }
+
         const paciente = pacientesRepository.create({
             cpf,
             nsus,
@@ -32,7 +45,7 @@ class PacienteController {
 
         await pacientesRepository.save(paciente);
 
-        return response.json(paciente);
+        return response.status(201).json(paciente);
     }
 }
 
