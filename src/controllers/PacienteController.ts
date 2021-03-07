@@ -18,15 +18,14 @@ class PacienteController {
 
         const pacientesRepository = getCustomRepository(PacientesRepository);
 
-        const pacienteAlreadyExistsCPF = await pacientesRepository.findOne({
-            cpf
+        const results = await pacientesRepository.find({
+            where: [
+                { cpf: cpf },
+                { nsus: nsus }
+            ]
         })
 
-        const pacienteAlreadyExistsNSUS = await pacientesRepository.findOne({
-            nsus
-        })
-
-        if (pacienteAlreadyExistsCPF || pacienteAlreadyExistsNSUS) {
+        if (results.length != 0) {
             return response.status(400).json({
                 error: "Paciente already exists!",
             })

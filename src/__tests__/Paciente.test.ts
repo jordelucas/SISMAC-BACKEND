@@ -29,8 +29,8 @@ describe("Pacientes", () => {
 
     it("Should not be able to create a new Pacient if it already exists", async () => {
         const response = await request(app).post("/pacientes").send({
-            cpf: "123123123",
-            nsus: "111111112",
+            cpf: "123123122",
+            nsus: "111111111",
             nome: "clev",
             cidade: "cang",
             bairro: "sertãozinho",
