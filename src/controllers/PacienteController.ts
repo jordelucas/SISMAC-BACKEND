@@ -47,6 +47,14 @@ class PacienteController {
 
         return response.status(201).json(paciente);
     }
+
+    async show(request: Request, response: Response) {
+        const pacientesRepository = getCustomRepository(PacientesRepository);
+
+        const all = await pacientesRepository.find();
+
+        return response.json(all);
+    }
 }
 
 export { PacienteController };
