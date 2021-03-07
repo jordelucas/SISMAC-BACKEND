@@ -14,12 +14,10 @@
 API RESTFULL em desenvolvimento na disciplina de Desenvolvimento de Sistemas WEB II, do Bacharelado em Tecnologia da Informação - IMD/UFRN.
 </p>
 
-:computer: - [**@jordelucas**](https://github.com/jordelucas)
 
-:computer: - [**@clevinacio**](https://github.com/clevinacio)
+:man_teacher: [**@fmarquesfilho**](https://github.com/fmarquesfilho) | :man_technologist: [**@clevinacio**](https://github.com/clevinacio) | :man_technologist: [**@jordelucas**](https://github.com/jordelucas)
 
-## Como executar
----
+## :rocket: Como executar
 
 Clone o projeto e acesse a pasta
 
@@ -38,8 +36,7 @@ $ yarn dev
 # O servidor irá iniciar na porta  8080 - vá para http://localhost:8080
 ```
 
-## Estórias do usuário: 
----
+## :book: Estórias do usuário: 
 
 Funcionário:
 
@@ -54,8 +51,7 @@ Funcionário:
 * Seção de agendamento
   * Desejo realizar agendamento de exames e consultas.
 
-## Endpoints ##
----
+## :ballot_box_with_check: Endpoints ##
 
 **[POST]**    `/pacientes`
 
