@@ -1,13 +1,20 @@
 import request from 'supertest';
+import { Connection, getConnection } from 'typeorm';
 import { app } from '../app';
 
 import createConnection from '../database';
+let connection: Connection;
 
-describe("Pacientes", () => {
+describe("pacientes", () => {
     beforeAll(async () => {
-        const connection = await createConnection();
+        connection = await createConnection();
         await connection.runMigrations();
     });
+
+    afterAll(async () => {
+        connection.undoLastMigration();
+        await connection.close();
+    })
 
     it("Should be able to create a new Paciente", async () => {
         const response = await request(app).post("/pacientes").send({
@@ -58,10 +65,5 @@ describe("Pacientes", () => {
         const response = await request(app).get("/pacientes");
 
         expect(response.body.length).toBe(2);
-    })
-
-    afterAll(async () => {
-        const connection = await createConnection();
-        await connection.close();
     })
 });

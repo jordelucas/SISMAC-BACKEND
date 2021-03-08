@@ -10,13 +10,13 @@
         "synchronize": true,
         "logging": true,
         "migrations": [
-            "./src/database/migrations/**.ts"
+            "./src/database/migration/**.ts"
         ],
         "entities": [
             "./src/models/**.ts"
         ],
         "cli": {
-            "migrationsDir": "./src/database/migrations"
+            "migrationsDir": "./src/database/migration"
         }
     },
     {
@@ -26,18 +26,18 @@
         "port": 5432,
         "username": "test",
         "password": "test",
-        "database": "database",
+        "database": "test",
+        "synchronize": false,
         "dropSchema": true,
-        "synchronize": true,
         "logging": false,
         "migrations": [
-            "./src/database/migrations/**.ts"
+            "./src/database/migration/**.ts"
         ],
         "entities": [
             "./src/models/**.ts"
         ],
         "cli": {
-            "migrationsDir": "./src/database/migrations"
+            "migrationsDir": "./src/database/migration"
         }
     }
 ]
