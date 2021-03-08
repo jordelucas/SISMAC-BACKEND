@@ -1,19 +1,43 @@
-{
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "test",
-    "password": "test",
-    "database": "database",
-    "synchronize": true,
-    "logging": false,
-    "migrations": [
-        "./src/database/migrations/**.ts"
-    ],
-    "entities": [
-        "./src/models/**.ts"
-    ],
-    "cli": {
-        "migrationsDir": "./src/database/migrations"
+[
+    {
+        "name": "dev",
+        "type": "postgres",
+        "host": "localhost",
+        "port": 5432,
+        "username": "test",
+        "password": "test",
+        "database": "database",
+        "synchronize": true,
+        "logging": true,
+        "migrations": [
+            "./src/database/migrations/**.ts"
+        ],
+        "entities": [
+            "./src/models/**.ts"
+        ],
+        "cli": {
+            "migrationsDir": "./src/database/migrations"
+        }
+    },
+    {
+        "name": "test",
+        "type": "postgres",
+        "host": "localhost",
+        "port": 5432,
+        "username": "test",
+        "password": "test",
+        "database": "database",
+        "dropSchema": true,
+        "synchronize": true,
+        "logging": false,
+        "migrations": [
+            "./src/database/migrations/**.ts"
+        ],
+        "entities": [
+            "./src/models/**.ts"
+        ],
+        "cli": {
+            "migrationsDir": "./src/database/migrations"
+        }
     }
-}
+]

@@ -9,7 +9,6 @@ describe("Pacientes", () => {
         await connection.runMigrations();
     });
 
-
     it("Should be able to create a new Paciente", async () => {
         const response = await request(app).post("/pacientes").send({
             cpf: "123123123",
@@ -61,4 +60,8 @@ describe("Pacientes", () => {
         expect(response.body.length).toBe(2);
     })
 
+    afterAll(async () => {
+        const connection = await createConnection();
+        await connection.close();
+    })
 });
