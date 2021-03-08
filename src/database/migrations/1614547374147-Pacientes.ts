@@ -56,7 +56,7 @@ export class Pacientes1614547374147 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("pacientes");
+        await queryRunner.dropTable("Pacientes");
     }
 
 }
