@@ -6,7 +6,7 @@ export class Pacientes1614547374147 implements MigrationInterface {
         await queryRunner.createTable(
             new Table(
                 {
-                    name: "Pacientes",
+                    name: "pacientes",
                     columns: [
                         {
                             name: "id",
