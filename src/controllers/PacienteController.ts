@@ -53,7 +53,7 @@ class PacienteController {
 
         const all = await pacientesRepository.find();
 
-        return response.json(all);
+        return response.status(200).json(all);
     }
 
     async showByID(request: Request, response: Response) {
@@ -63,7 +63,13 @@ class PacienteController {
 
         const result = await pacientesRepository.findOne(IDRequest);
 
-        return response.json(result);
+        if (!result) {
+            return response.status(404).json({
+                error: "Paciente not found!",
+            })
+        }
+
+        return response.status(200).json(result);
     }
 }
 

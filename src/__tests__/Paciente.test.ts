@@ -66,4 +66,25 @@ describe("pacientes", () => {
 
         expect(response.body.length).toBe(2);
     })
+
+    it("Should be able to find a Paciente by ID", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "123123455",
+            nsus: "222222255",
+            nome: "clevi",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const response = await request(app).get("/pacientes/" + id);
+
+        expect(response.status).toBe(200);
+
+    })
 });
