@@ -52,6 +52,14 @@ class PacienteController {
         const pacientesRepository = getCustomRepository(PacientesRepository);
 
         const cpf = request.query.cpf as string;
+        const nsus = request.query.nsus as string;
+
+        if (nsus) {
+            const filteredByNsus = await pacientesRepository.findOne({nsus});
+
+            return response.json(filteredByNsus);
+        }
+
         if (cpf) {
             const filteredByCpf = await pacientesRepository.findOne({cpf});
 
