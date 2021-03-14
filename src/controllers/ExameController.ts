@@ -1,9 +1,9 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { ExamesRepository } from "../repositories/ExamesRepository";
 
 class ExameController {
-    async create(request: Request, respose: Response) {
+    async create(request: Request, response: Response) {
         const {
             nome,
             autorizacao
@@ -11,7 +11,7 @@ class ExameController {
 
         const examesRepository = getCustomRepository(ExamesRepository);
 
-        const result = await examesRepository.find({ nome: nome })
+        const result = await examesRepository.findOne({ nome })
 
         if (result) {
             return response.status(400).json({
