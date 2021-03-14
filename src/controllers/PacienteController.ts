@@ -55,6 +55,16 @@ class PacienteController {
 
         return response.json(all);
     }
+
+    async showByID(request: Request, response: Response) {
+        const pacientesRepository = getCustomRepository(PacientesRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await pacientesRepository.findOne(IDRequest);
+
+        return response.json(result);
+    }
 }
 
 export { PacienteController };
