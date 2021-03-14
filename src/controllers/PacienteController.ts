@@ -51,6 +51,12 @@ class PacienteController {
     async show(request: Request, response: Response) {
         const pacientesRepository = getCustomRepository(PacientesRepository);
 
+        const cpf = request.query.cpf as string;
+        if (cpf) {
+            const filteredByCpf = await pacientesRepository.findOne({cpf});
+
+            return response.json(filteredByCpf);
+        }
         const all = await pacientesRepository.find();
 
         return response.json(all);
