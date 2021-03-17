@@ -26,7 +26,7 @@ describe("exames", () => {
         expect(response.body).toHaveProperty("id");
     })
 
-    it("Should not be able to create a new Pacient if it already exists", async () => {
+    it("Should not be able to create a new Exame if it already exists", async () => {
         const response = await request(app).post("/exames").send({
             nome: "teste",
             autorizacao: true
@@ -35,4 +35,21 @@ describe("exames", () => {
         expect(response.status).toBe(400);
     })
 
+    it("Should not be able to create a new Exame if nome value is empty", async () => {
+        const response = await request(app).post("/exames").send({
+            nome: "",
+            autorizacao: true
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("Should not be able to create a new Exame if autorizacao type is not boolean", async () => {
+        const response = await request(app).post("/exames").send({
+            nome: "teste2",
+            autorizacao: "true"
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
