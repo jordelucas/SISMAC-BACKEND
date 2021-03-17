@@ -1,6 +1,6 @@
 name: Workflow Complete
 
-on: ["push"]
+on: ["pull_request"]
 
 jobs:
   build:
@@ -32,5 +32,5 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
 
-      - name: Run all test
+      - name: Run all tests
         run: yarn test
