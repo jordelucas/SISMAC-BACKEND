@@ -97,7 +97,7 @@ describe("pacientes", () => {
         expect(response.status).toBe(404);
     })
 
-    it("Should delete a existing Paciente by ID", async () => {
+    it("Should delete a existing Paciente by ID and not delete the same again", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "12312345",
             nsus: "22222225",
@@ -115,5 +115,9 @@ describe("pacientes", () => {
         const response = await request(app).delete("/pacientes/" + id);
 
         expect(response.status).toBe(200);
+
+        const response2 = await request(app).delete("/pacientes/" + id);
+
+        expect(response2.status).toBe(404)
     })
 });
