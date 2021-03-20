@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { Connection, getConnection } from 'typeorm';
 import { app } from '../app';
+import { v4 as uuid } from "uuid";
 
 import createConnection from '../database';
 let connection: Connection;
@@ -65,5 +66,34 @@ describe("pacientes", () => {
         const response = await request(app).get("/pacientes");
 
         expect(response.body.length).toBe(2);
+    })
+
+    it("Should be able to find a Paciente by ID", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "123123455",
+            nsus: "222222255",
+            nome: "clevi",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const response = await request(app).get("/pacientes/" + id);
+
+        expect(response.status).toBe(200);
+
+    })
+
+    it("Should return a 404 error if ID doesnt exists", async () => {
+        const id = uuid();
+
+        const response = await request(app).get("/pacientes/" + id);
+
+        expect(response.status).toBe(404);
     })
 });
