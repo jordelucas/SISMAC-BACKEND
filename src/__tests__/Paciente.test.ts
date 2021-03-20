@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { Connection, getConnection } from 'typeorm';
 import { app } from '../app';
+import { v4 as uuid } from "uuid";
 
 import createConnection from '../database';
 let connection: Connection;
@@ -86,5 +87,13 @@ describe("pacientes", () => {
 
         expect(response.status).toBe(200);
 
+    })
+
+    it("Should return a 404 error if ID doesnt exists", async () => {
+        const id = uuid();
+
+        const response = await request(app).get("/pacientes/" + id);
+
+        expect(response.status).toBe(404);
     })
 });
