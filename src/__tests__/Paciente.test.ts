@@ -96,4 +96,24 @@ describe("pacientes", () => {
 
         expect(response.status).toBe(404);
     })
+
+    it("Should delete a existing Paciente by ID", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "12312345",
+            nsus: "22222225",
+            nome: "clevi",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const response = await request(app).delete("/pacientes/" + id);
+
+        expect(response.status).toBe(200);
+    })
 });
