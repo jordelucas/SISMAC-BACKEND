@@ -1,0 +1,40 @@
+name: Workflow Complete
+
+on:
+  push:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+        postgresql-version: [13.2]
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --unshallow
+
+      - name: Use NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start PostgreSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: ${{ matrix.postgresql-version }}
+          postgresql db: test
+          postgresql user: test
+          postgresql password: test
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Run all tests
+        run: yarn test

@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { Connection, getConnection } from 'typeorm';
 import { app } from '../app';
+import { v4 as uuid } from "uuid";
 
 import createConnection from '../database';
 let connection: Connection;
@@ -65,5 +66,86 @@ describe("pacientes", () => {
         const response = await request(app).get("/pacientes");
 
         expect(response.body.length).toBe(2);
+    })
+
+    it("Should be able to find a Paciente by ID", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "123123455",
+            nsus: "222222255",
+            nome: "clevi",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const response = await request(app).get("/pacientes/" + id);
+
+        expect(response.status).toBe(200);
+
+    })
+
+    it("Should return a 404 error if ID doesnt exists", async () => {
+        const id = uuid();
+
+        const response = await request(app).get("/pacientes/" + id);
+
+        expect(response.status).toBe(404);
+    })
+
+    it("Should delete a existing Paciente by ID and not delete the same again", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "12312345",
+            nsus: "22222225",
+            nome: "clevi",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+        
+        const id = paciente.body.id;
+
+        const response = await request(app).delete("/pacientes/" + id);
+
+        expect(response.status).toBe(200);
+
+        const response2 = await request(app).delete("/pacientes/" + id);
+
+        expect(response2.status).toBe(404)
+    })
+
+    it("Should update a Paciente with the new informations", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "12312348",
+            nsus: "22222228",
+            nome: "clev",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+      
+        const response = await request(app).put("/pacientes/" + paciente.body.id).send({
+            cpf: "12312347",
+            nsus: "22222227",
+            nome: "clevii",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        expect(response.status).toBe(200);
     })
 });

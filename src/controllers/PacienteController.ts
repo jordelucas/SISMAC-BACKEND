@@ -75,7 +75,61 @@ class PacienteController {
 
         const all = await pacientesRepository.find();
 
-        return response.json(all);
+        return response.status(200).json(all);
+    }
+
+    async showByID(request: Request, response: Response) {
+        const pacientesRepository = getCustomRepository(PacientesRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await pacientesRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Paciente not found!",
+            })
+        }
+
+        return response.status(200).json(result);
+    }
+
+    async delete(request: Request, response: Response) {
+        const pacientesRepository = getCustomRepository(PacientesRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await pacientesRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Paciente not found!",
+            })
+        }
+  
+        await pacientesRepository.delete(result);
+
+        return response.status(200).json({
+            message: "Paciente has been removed!"
+        });
+    }
+
+    async update(request: Request, response: Response) {
+        const pacientesRepository = getCustomRepository(PacientesRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await pacientesRepository.findOne(IDRequest);
+        
+        if (!result) {
+            return response.status(404).json({
+                error: "Paciente not found!",
+            })
+        }
+        
+        await pacientesRepository.update(IDRequest, request.body);
+
+        return response.status(200).json(request.body);
     }
 }
 
