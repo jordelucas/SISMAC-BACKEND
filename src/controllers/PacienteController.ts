@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, Like } from "typeorm";
 import { PacientesRepository } from "../repositories/PacientesRepository";
 
 class PacienteController {
@@ -50,6 +50,28 @@ class PacienteController {
 
     async show(request: Request, response: Response) {
         const pacientesRepository = getCustomRepository(PacientesRepository);
+
+        const nome = request.query.nome as string;
+        const cpf = request.query.cpf as string;
+        const nsus = request.query.nsus as string;
+
+        if (nsus) {
+            const filteredByNsus = await pacientesRepository.findOne({nsus});
+
+            return response.json(filteredByNsus);
+        }
+
+        if (cpf) {
+            const filteredByCpf = await pacientesRepository.findOne({cpf});
+
+            return response.json(filteredByCpf);
+        }
+
+        if (nome) {
+            const filteredByCpf = await pacientesRepository.find({nome: Like(`%${nome}%`)});
+
+            return response.json(filteredByCpf);
+        }
 
         const all = await pacientesRepository.find();
 

@@ -68,6 +68,88 @@ describe("pacientes", () => {
         expect(response.body.length).toBe(2);
     })
 
+    it("Should be able to find a Paciente by cpf", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "963",
+            nsus: "9632",
+            nome: "jord",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const params = {
+            cpf: "963"
+        }
+
+        const response = await request(app).get(`/pacientes?cpf=${params.cpf}`);
+
+        expect(response.body.id).toBe(id);
+    })
+
+    it("Should be able to find a Paciente by nsus", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "456",
+            nsus: "4567",
+            nome: "kety",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const params = {
+            nsus: "4567"
+        }
+
+        const response = await request(app).get(`/pacientes?nsus=${params.nsus}`);
+
+        expect(response.body.id).toBe(id);
+    })
+
+    it("Should be able to find a Paciente by name", async () => {
+        await request(app).post("/pacientes").send({
+            cpf: "111",
+            nsus: "1111",
+            nome: "marlon alves",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        await request(app).post("/pacientes").send({
+            cpf: "222",
+            nsus: "2222",
+            nome: "marlon nascimento",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const params = {
+            name: "marlon"
+        }
+
+        const response = await request(app).get(`/pacientes?nome=${params.name}`);
+
+        expect(response.body.length).toBe(2);
+    })
+
     it("Should be able to find a Paciente by ID", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "123123455",
