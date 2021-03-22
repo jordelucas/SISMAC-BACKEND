@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "SET NODE_ENV=dev & ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "test": "SET NODE_ENV=test & jest --runInBand"
+    "test": "SET NODE_ENV=test & jest --runInBand",
+    "start": "node buid/src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
