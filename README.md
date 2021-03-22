@@ -56,3 +56,11 @@ Funcionário:
 **[POST]**    `/pacientes`
 
 **[GET]**     `/pacientes` 
+
+**[PUT]**     `/pacientes` 
+
+**[DELETE]**     `/pacientes`
+
+**[POST]**     `/exames` 
+
+**[GET]**     `/exames` 
