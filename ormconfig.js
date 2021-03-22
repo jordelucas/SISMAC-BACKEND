@@ -1,11 +1,7 @@
-[
+module.exports = [
     {
         "type": "postgres",
-        "host": "localhost",
-        "port": 5432,
-        "username": "test",
-        "password": "test",
-        "database": "database",
+        "url": process.env.DATABASE_URL,
         "synchronize": true,
         "logging": true,
         "migrations": [
@@ -21,11 +17,7 @@
     {
         "name": "test",
         "type": "postgres",
-        "host": "localhost",
-        "port": 5432,
-        "username": "test",
-        "password": "test",
-        "database": "test",
+        "url": "postgres://test:test@localhost:5432/test",
         "synchronize": false,
         "dropSchema": true,
         "logging": false,
@@ -35,5 +27,22 @@
         "entities": [
             "./src/models/**.ts"
         ]
+    },
+    {
+        "name": "start",
+        "type": "postgres",
+        "url": process.env.DATABASE_URL,
+        "synchronize": true,
+        "logging": true,
+        "migrations": [
+            "build/src/database/migration/**.js"
+        ],
+        "entities": [
+            "build/src/models/**.js"
+        ],
+        "cli": {
+            "migrationsDir": "./src/database/migration",
+            "entitiesDir": "./src/models"
+        }
     }
 ]
