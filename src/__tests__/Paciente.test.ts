@@ -91,6 +91,31 @@ describe("pacientes", () => {
 
         expect(response.body.id).toBe(id);
     })
+
+    it("Should be able to find a Paciente by nsus", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "456",
+            nsus: "4567",
+            nome: "kety",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const id = paciente.body.id;
+
+        const params = {
+            nsus: "4567"
+        }
+
+        const response = await request(app).get(`/pacientes?nsus=${params.nsus}`);
+
+        expect(response.body.id).toBe(id);
+    })
+
     it("Should be able to find a Paciente by ID", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "123123455",
