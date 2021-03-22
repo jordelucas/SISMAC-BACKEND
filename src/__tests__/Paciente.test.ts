@@ -116,6 +116,40 @@ describe("pacientes", () => {
         expect(response.body.id).toBe(id);
     })
 
+    it("Should be able to find a Paciente by name", async () => {
+        await request(app).post("/pacientes").send({
+            cpf: "111",
+            nsus: "1111",
+            nome: "marlon alves",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        await request(app).post("/pacientes").send({
+            cpf: "222",
+            nsus: "2222",
+            nome: "marlon nascimento",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        const params = {
+            name: "marlon"
+        }
+
+        const response = await request(app).get(`/pacientes?nome=${params.name}`);
+
+        expect(response.body.length).toBe(2);
+    })
+
     it("Should be able to find a Paciente by ID", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "123123455",
