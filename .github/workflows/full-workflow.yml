@@ -1,6 +1,11 @@
 name: Workflow Complete
 
-on: ["pull_request"]
+on:
+  push:
+  pull_request:
+    branches:
+      - develop
+      - main
 
 jobs:
   build:
