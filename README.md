@@ -57,10 +57,24 @@ Funcionário:
 
 **[GET]**     `/pacientes` 
 
-**[PUT]**     `/pacientes` 
+**[GET]**     `/pacientes/:id` 
 
-**[DELETE]**     `/pacientes`
+**[PUT]**     `/pacientes/:id` 
+
+**[DELETE]**     `/pacientes/:id`
 
 **[POST]**     `/exames` 
 
 **[GET]**     `/exames` 
+
+**[GET]**     `/exames/:id` 
+
+**[POST]**     `/consultas` 
+
+**[GET]**     `/consultas` 
+
+**[GET]**     `/consultas/:id` 
+
+**[POST]**     `/vagas` 
+
+**[POST]**     `/agendamento` 
