@@ -1,11 +1,7 @@
 module.exports = [
     {
         "type": "postgres",
-        "host": "localhost",
-        "port": 5432,
-        "username": "test",
-        "password": "test",
-        "database": "database",
+        "url": "postgres://test:test@localhost:5432/database",
         "synchronize": true,
         "logging": true,
         "migrations": [
@@ -21,11 +17,7 @@ module.exports = [
     {
         "name": "test",
         "type": "postgres",
-        "host": "localhost",
-        "port": 5432,
-        "username": "test",
-        "password": "test",
-        "database": "test",
+        "url": "postgres://test:test@localhost:5432/test",
         "synchronize": false,
         "dropSchema": true,
         "logging": false,
