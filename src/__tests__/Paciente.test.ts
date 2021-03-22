@@ -109,7 +109,7 @@ describe("pacientes", () => {
             dtNascimento: "1998-10-30",
             telefone: "8489498494"
         });
-
+        
         const id = paciente.body.id;
 
         const response = await request(app).delete("/pacientes/" + id);
@@ -119,5 +119,33 @@ describe("pacientes", () => {
         const response2 = await request(app).delete("/pacientes/" + id);
 
         expect(response2.status).toBe(404)
+    })
+
+    it("Should update a Paciente with the new informations", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "12312348",
+            nsus: "22222228",
+            nome: "clev",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+      
+        const response = await request(app).put("/pacientes/" + paciente.body.id).send({
+            cpf: "12312347",
+            nsus: "22222227",
+            nome: "clevii",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998-10-30",
+            telefone: "8489498494"
+        });
+
+        expect(response.status).toBe(200);
     })
 });
