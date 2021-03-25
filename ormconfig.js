@@ -42,7 +42,7 @@ module.exports = [
         ],
         "cli": {
             "migrationsDir": "./src/database/migration",
-            "entitiesDir": "build/src/models"
+            "entitiesDir": "./build/src/models"
         }
     }
 ]
