@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "SET NODE_ENV=dev & ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-    "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "test": "SET NODE_ENV=test & jest --runInBand",
     "start": "SET NODE_ENV=start & ts-node build/src/server.js",
     "postinstall": "tsc"

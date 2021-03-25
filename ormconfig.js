@@ -5,13 +5,14 @@ module.exports = [
         "synchronize": true,
         "logging": true,
         "migrations": [
-            "./src/database/migration/**.ts"
+            process.env.MIGRATIONS_PATH
         ],
         "entities": [
-            "./src/models/**.ts"
+            process.env.ENTITIES_PATH
         ],
         "cli": {
-            "migrationsDir": "./src/database/migration"
+            "migrationsDir": "./src/database/migration",
+            "entitiesDir": "./src/models"
         }
     },
     {
@@ -42,7 +43,7 @@ module.exports = [
         ],
         "cli": {
             "migrationsDir": "./src/database/migration",
-            "entitiesDir": "./build/src/models"
+            "entitiesDir": "./src/models"
         }
     }
 ]
