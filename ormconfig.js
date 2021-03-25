@@ -1,6 +1,6 @@
 module.exports = [
     {
-        "name": "default",
+        "name": process.env.LOCAL_ENV,
         "type": "postgres",
         "url": process.env.DATABASE_URL,
         "synchronize": true,
@@ -29,22 +29,5 @@ module.exports = [
         "entities": [
             "./src/models/**.ts"
         ]
-    },
-    {
-        "name": "production",
-        "type": "postgres",
-        "url": process.env.DATABASE_URL,
-        "synchronize": true,
-        "logging": true,
-        "migrations": [
-            "build/src/database/migration/**.js"
-        ],
-        "entities": [
-            "build/src/models/**.js"
-        ],
-        "cli": {
-            "migrationsDir": "./src/database/migration",
-            "entitiesDir": "./src/models"
-        }
     }
 ]
