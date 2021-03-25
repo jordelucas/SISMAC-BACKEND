@@ -1,5 +1,6 @@
 module.exports = [
     {
+        "name": "default",
         "type": "postgres",
         "url": process.env.DATABASE_URL,
         "synchronize": true,
@@ -30,7 +31,7 @@ module.exports = [
         ]
     },
     {
-        "name": "start",
+        "name": "production",
         "type": "postgres",
         "url": process.env.DATABASE_URL,
         "synchronize": true,
