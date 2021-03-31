@@ -19,4 +19,5 @@ router.put("/pacientes/:id", pacienteController.update);
 //Exames
 router.post("/exames", exameController.create);
 router.get("/exames", exameController.show);
+router.get("/exames/:id", exameController.showByID);
 export { router }

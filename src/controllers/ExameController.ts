@@ -49,6 +49,22 @@ class ExameController {
 
         return response.status(200).json(all);
     }
+
+    async showByID(request: Request, response: Response) {
+        const examesRepository = getCustomRepository(ExamesRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await examesRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Exame not found!",
+            })
+        }
+
+        return response.status(200).json(result);
+    }
 }
 
 export { ExameController }
