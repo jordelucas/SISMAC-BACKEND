@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { Connection, getConnection } from 'typeorm';
 import { app } from '../app';
+import { v4 as uuid } from "uuid";
 
 import createConnection from '../database';
 let connection: Connection;
@@ -18,7 +19,7 @@ describe("exames", () => {
 
     it("Should be able to create a new Exame", async () => {
         const response = await request(app).post("/exames").send({
-            nome: "teste",
+            nome: "mamografia",
             autorizacao: true
         });
 
@@ -28,7 +29,7 @@ describe("exames", () => {
 
     it("Should not be able to create a new Exame if it already exists", async () => {
         const response = await request(app).post("/exames").send({
-            nome: "teste",
+            nome: "mamografia",
             autorizacao: true
         });
 
@@ -51,5 +52,37 @@ describe("exames", () => {
         });
 
         expect(response.status).toBe(400);
+    })
+
+    it("Should be able to get all Exames", async () => {
+        await request(app).post("/exames").send({
+            nome: "ecocardiograma",
+            autorizacao: true
+        });
+
+        const response = await request(app).get("/exames");
+
+        expect(response.body.length).toBe(2);
+    })
+
+    it("Should be able to find a Exame by ID", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "eletrocardiograma",
+            autorizacao: true
+        });
+
+        const id = exame.body.id;
+
+        const response = await request(app).get("/exames/" + id);
+
+        expect(response.status).toBe(200);
+    })
+
+    it("Should return a 404 error if ID doesnt exists", async () => {
+        const id = uuid();
+
+        const response = await request(app).get("/exames/" + id);
+
+        expect(response.status).toBe(404);
     })
 })
