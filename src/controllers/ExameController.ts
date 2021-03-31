@@ -41,6 +41,14 @@ class ExameController {
 
         return response.status(201).json(exame);
     }
+
+    async show(request: Request, response: Response) {
+        const examesRepository = getCustomRepository(ExamesRepository);
+
+        const all = await examesRepository.find();
+
+        return response.status(200).json(all);
+    }
 }
 
 export { ExameController }
