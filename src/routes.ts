@@ -23,4 +23,8 @@ router.post("/exames", exameController.create);
 
 //Consultas
 router.post("/consultas", consultaController.create);
+router.get("/consultas", consultaController.show);
+//Rotas para ID de consultas
+router.get("/consultas/:id", consultaController.showByID)
+
 export { router }
