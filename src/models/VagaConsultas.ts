@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity("vagasConsultas")
-class VagaConsulta {
+class VagaConsultas {
     @PrimaryColumn()
     readonly id: string;
 
@@ -25,4 +25,4 @@ class VagaConsulta {
     }
 }
 
-export { VagaConsulta }
+export { VagaConsultas }
