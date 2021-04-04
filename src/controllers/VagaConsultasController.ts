@@ -21,6 +21,15 @@ class VagaConsultasController {
             })
         }
 
+        var today = new Date();
+        var dateDataConsulta = new Date(dataConsulta);
+
+        if (dateDataConsulta <= today) {
+            return response.status(400).json({
+                error: "dataConsulta is older then actual data!",
+            })
+        }
+
         const vagaConsulta = vagaConsultasRepository.create({
             nomeEspecialista,
             dataConsulta,
