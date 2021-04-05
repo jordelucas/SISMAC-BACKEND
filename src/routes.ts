@@ -20,6 +20,7 @@ router.put("/pacientes/:id", pacienteController.update);
 
 //Exames
 router.post("/exames", exameController.create);
+//Rotas para ID de Exames
 router.get("/exames", exameController.show);
 //Rotas para ID de Exames
 router.get("/exames/:id", exameController.showByID);
@@ -29,6 +30,5 @@ router.post("/consultas", consultaController.create);
 router.get("/consultas", consultaController.show);
 //Rotas para ID de Consultas
 router.get("/consultas/:id", consultaController.showByID)
-
 
 export { router }
