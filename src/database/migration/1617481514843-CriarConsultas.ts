@@ -24,6 +24,7 @@ export class CriarConsultas1617481514843 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable("consultas");
     }
 
 }

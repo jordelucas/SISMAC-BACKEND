@@ -40,4 +40,27 @@ describe("consultas", () => {
 
         expect(response.status).toBe(400);
     })
+  
+    it("Should be able to get all Consultas", async () => {
+        await request(app).post("/consultas").send({
+            nome: "teste segundo"
+        });
+
+        const response = await request(app).get("/consultas");
+
+        expect(response.body.length).toBe(2);
+    })
+
+    it("Should be able to find a Consulta by ID", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste3"
+        });
+
+        const id = consulta.body.id;
+
+        const response = await request(app).get("/consultas/" + id);
+
+        expect(response.status).toBe(200);
+
+    })
 })
