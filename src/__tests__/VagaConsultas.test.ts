@@ -29,9 +29,12 @@ describe("vagasConsultas", () => {
             nome: "teste"
         })
 
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+
         const response = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: "2021/04/25",
+            dataConsulta: date,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
@@ -45,16 +48,19 @@ describe("vagasConsultas", () => {
             nome: "teste"
         })
 
-        const response = await request(app).post("/vagasConsultas").send({
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+
+        await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: "2021/04/25",
+            dataConsulta: date,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
 
         const response2 = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: "2021/04/25",
+            dataConsulta: date,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
@@ -67,13 +73,45 @@ describe("vagasConsultas", () => {
             nome: "teste"
         })
 
+        var date = new Date();
+        date.setDate(date.getDate() - 1);
+
         const response = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: "2021/04/01",
+            dataConsulta: date,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
 
         expect(response.status).toBe(400);
+    })
+
+    it("Should be able to get all VagasConsultas", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        })
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+
+        await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "jose",
+            dataConsulta: date,
+            quantidade: 5,
+            consulta_id: consulta.body.id
+        });
+
+        date.setDate(date.getDate() + 1);
+        await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "jose",
+            dataConsulta: date,
+            quantidade: 5,
+            consulta_id: consulta.body.id
+        });
+
+        const response = await request(app).get("/vagasConsultas");
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(2);
     })
 })

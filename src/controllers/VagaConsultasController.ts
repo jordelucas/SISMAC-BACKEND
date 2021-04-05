@@ -56,7 +56,7 @@ class VagaConsultasController {
 
         const all = await vagaConsultasRepository.find();
 
-        return response.status(201).json(all);
+        return response.status(200).json(all);
     }
 
     async showByID(request: Request, response: Response) {
@@ -74,8 +74,6 @@ class VagaConsultasController {
 
         return response.status(200).json(result);
     }
-
-
 }
 
 export { VagaConsultasController }
