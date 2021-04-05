@@ -114,4 +114,35 @@ describe("vagasConsultas", () => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
     })
+
+    it("Should be able to find a VagaConsultas by ID", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        })
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+
+        const vaga = await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "jose",
+            dataConsulta: date,
+            quantidade: 5,
+            consulta_id: consulta.body.id
+        });
+
+        const id = vaga.body.id;
+
+        const response = await request(app).get("/vagasConsultas/" + id);
+
+        expect(response.status).toBe(200);
+
+    })
+
+    it("Should return a 404 error if ID doesnt exists", async () => {
+        const id = uuid();
+
+        const response = await request(app).get("/vagasConsultas/" + id);
+
+        expect(response.status).toBe(404);
+    })
 })
