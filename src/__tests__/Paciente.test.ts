@@ -191,7 +191,7 @@ describe("pacientes", () => {
             dtNascimento: "1998-10-30",
             telefone: "8489498494"
         });
-        
+
         const id = paciente.body.id;
 
         const response = await request(app).delete("/pacientes/" + id);
@@ -215,7 +215,7 @@ describe("pacientes", () => {
             dtNascimento: "1998-10-30",
             telefone: "8489498494"
         });
-      
+
         const response = await request(app).put("/pacientes/" + paciente.body.id).send({
             cpf: "12312347",
             nsus: "22222227",

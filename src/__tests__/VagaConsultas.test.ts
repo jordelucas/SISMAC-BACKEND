@@ -20,6 +20,7 @@ describe("vagasConsultas", () => {
     })
 
     afterAll(async () => {
+        connection.undoLastMigration();
         await connection.close();
     })
 
