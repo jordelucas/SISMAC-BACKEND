@@ -13,10 +13,18 @@ class VagaConsultasController {
 
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository)
 
-        const result = await vagaConsultasRepository.findOne({ consulta_id })
+        const result = await vagaConsultasRepository.find({
+            where: [
+                {
+                    consulta_id: consulta_id,
+                    dataConsulta: dataConsulta
+                }
+            ]
+        })
 
-        if (result) {
+        if (result.length != 0) {
             return response.status(400).json({
+                result,
                 error: "Vaga for Consulta already exists!",
             })
         }
