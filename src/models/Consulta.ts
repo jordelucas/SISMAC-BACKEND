@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 
 @Entity("consultas")
 class Consulta {
-
+  
     @PrimaryColumn()
     readonly id: string;
 
