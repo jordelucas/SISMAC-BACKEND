@@ -40,7 +40,7 @@ describe("consultas", () => {
 
         expect(response.status).toBe(400);
     })
-  
+
     it("Should be able to get all Consultas", async () => {
         await request(app).post("/consultas").send({
             nome: "teste segundo"
