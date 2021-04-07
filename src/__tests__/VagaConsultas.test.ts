@@ -2,7 +2,7 @@ import request from 'supertest';
 import { Connection, getConnection } from 'typeorm';
 import { app } from '../app';
 import { v4 as uuid } from "uuid";
-
+import FormatDate from '../utils/FormatDate';
 import createConnection from '../database';
 let connection: Connection;
 
@@ -51,17 +51,18 @@ describe("vagasConsultas", () => {
 
         var date = new Date();
         date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
 
-        await request(app).post("/vagasConsultas").send({
+        const response = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
 
         const response2 = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });

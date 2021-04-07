@@ -8,15 +8,16 @@ import { Client } from 'pg';
 createConnection();
 
 const app = express();
+if (process.env.LOCAL_ENV == "production") {
+    const client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
-
-client.connect();
+    client.connect();
+}
 
 app.use(cors())
 app.use(express.json());
