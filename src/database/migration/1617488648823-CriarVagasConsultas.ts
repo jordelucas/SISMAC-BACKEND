@@ -26,6 +26,10 @@ export class CriarVagasConsultas1617488648823 implements MigrationInterface {
                             type: "int"
                         },
                         {
+                            name: "local",
+                            type: "varchar"
+                        },
+                        {
                             name: "consulta_id",
                             type: "uuid"
                         }
