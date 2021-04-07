@@ -3,13 +3,15 @@ import { ConsultaController } from "./controllers/ConsultaController";
 import { ExameController } from "./controllers/ExameController";
 import { PacienteController } from "./controllers/PacienteController";
 import { VagaConsultasController } from "./controllers/VagaConsultasController";
+import { VagaExamesController } from "./controllers/VagaExamesController";
 
 const router = Router();
 
 const pacienteController = new PacienteController;
 const exameController = new ExameController;
 const consultaController = new ConsultaController;
-const vagaConsultasController = new VagaConsultasController
+const vagaConsultasController = new VagaConsultasController;
+const vagaExamesController = new VagaExamesController;
 
 //Endereços
 //Paciente
@@ -38,4 +40,11 @@ router.get("/vagasConsultas", vagaConsultasController.show);
 
 //Rotas para ID de VagasConsultas
 router.get("/vagasConsultas/:id", vagaConsultasController.showByID);
+
+//Vagas Exames
+router.post("/vagasExames", vagaExamesController.create);
+router.get("/vagasExames", vagaExamesController.show);
+
+//Rotas para ID de VagasExames
+router.get("/vagasExames/:id", vagaExamesController.showByID);
 export { router }
