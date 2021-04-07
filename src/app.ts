@@ -9,14 +9,16 @@ createConnection();
 
 const app = express();
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
-
-client.connect();
+if (process.env.ENV_LOCAL == "production") {
+  const client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+          rejectUnauthorized: false
+      }
+  });
+  
+  client.connect();
+}
 
 app.use(cors())
 app.use(express.json());
