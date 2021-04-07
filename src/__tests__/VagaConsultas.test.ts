@@ -32,10 +32,11 @@ describe("vagasConsultas", () => {
 
         var date = new Date();
         date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
 
         const response = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
@@ -77,10 +78,11 @@ describe("vagasConsultas", () => {
 
         var date = new Date();
         date.setDate(date.getDate() - 1);
+        var date_string = FormatDate.format(date);
 
         const response = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
@@ -95,18 +97,21 @@ describe("vagasConsultas", () => {
 
         var date = new Date();
         date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
 
         await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
 
         date.setDate(date.getDate() + 1);
+        date_string = FormatDate.format(date);
+
         await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
@@ -124,10 +129,11 @@ describe("vagasConsultas", () => {
 
         var date = new Date();
         date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
 
         const vaga = await request(app).post("/vagasConsultas").send({
             nomeEspecialista: "jose",
-            dataConsulta: date,
+            dataConsulta: date_string,
             quantidade: 5,
             consulta_id: consulta.body.id
         });
