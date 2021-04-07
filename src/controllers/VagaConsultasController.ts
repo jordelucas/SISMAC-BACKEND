@@ -24,7 +24,6 @@ class VagaConsultasController {
 
         if (result.length != 0) {
             return response.status(400).json({
-                result,
                 error: "Vaga for Consulta already exists!",
             })
         }
