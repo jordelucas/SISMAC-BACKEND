@@ -13,6 +13,9 @@ class VagaExames {
     quantidade: number;
 
     @Column()
+    local: string;
+
+    @Column()
     exame_id: string;
 
     constructor() {
