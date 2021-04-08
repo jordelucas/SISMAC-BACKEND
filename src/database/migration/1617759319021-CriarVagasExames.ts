@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CriarVagasExames1617759319021 implements MigrationInterface {
 
@@ -20,6 +20,10 @@ export class CriarVagasExames1617759319021 implements MigrationInterface {
                         {
                             name: "quantidade",
                             type: "int"
+                        },
+                        {
+                            name: "local",
+                            type: "varchar"
                         },
                         {
                             name: "exame_id",

@@ -38,6 +38,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 
@@ -58,6 +59,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 
@@ -65,6 +67,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 
@@ -84,6 +87,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 
@@ -103,6 +107,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 
@@ -113,6 +118,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 
@@ -135,6 +141,7 @@ describe("vagasConsultas", () => {
             nomeEspecialista: "jose",
             dataConsulta: date_string,
             quantidade: 5,
+            local: "Cang",
             consulta_id: consulta.body.id
         });
 

@@ -8,6 +8,7 @@ class VagaConsultasController {
             nomeEspecialista,
             dataConsulta,
             quantidade,
+            local,
             consulta_id
         } = request.body;
 
@@ -41,6 +42,7 @@ class VagaConsultasController {
             nomeEspecialista,
             dataConsulta,
             quantidade,
+            local,
             consulta_id
         })
 

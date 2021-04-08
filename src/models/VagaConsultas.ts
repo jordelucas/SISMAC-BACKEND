@@ -16,7 +16,11 @@ class VagaConsultas {
     quantidade: number;
 
     @Column()
+    local: string;
+
+    @Column()
     consulta_id: string;
+
 
     constructor() {
         if (!this.id) {

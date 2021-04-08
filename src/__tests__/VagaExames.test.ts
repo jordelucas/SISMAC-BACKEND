@@ -38,6 +38,7 @@ describe("vagasExames", () => {
         const response = await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
@@ -58,12 +59,14 @@ describe("vagasExames", () => {
         await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
         const response2 = await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
@@ -83,6 +86,7 @@ describe("vagasExames", () => {
         const response = await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
@@ -102,6 +106,7 @@ describe("vagasExames", () => {
         await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
@@ -111,6 +116,7 @@ describe("vagasExames", () => {
         await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
@@ -133,6 +139,7 @@ describe("vagasExames", () => {
         const vaga = await request(app).post("/vagasExames").send({
             dataExame: date_string,
             quantidade: 5,
+            local: "Cang",
             exame_id: exame.body.id
         });
 
