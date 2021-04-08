@@ -15,7 +15,7 @@ if (process.env.LOCAL_ENV == "production") {
             rejectUnauthorized: false
         }
     });
-
+    
     client.connect();
 }
 
