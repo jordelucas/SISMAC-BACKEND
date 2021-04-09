@@ -28,6 +28,9 @@ router.get("/exames", exameController.show);
 //Rotas para ID de Exames
 router.get("/exames/:id", exameController.showByID);
 
+//Rota para vaga de um exame
+router.get("/exames/:id/vagas", vagaExamesController.showVagasByID);
+
 //Consultas
 router.post("/consultas", consultaController.create);
 router.get("/consultas", consultaController.show);
