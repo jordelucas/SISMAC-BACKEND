@@ -158,4 +158,47 @@ describe("vagasExames", () => {
 
         expect(response.status).toBe(404);
     })
+
+    it("Should be able to find vacancies by exame ID", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true,
+        })
+
+        const exame_id = exame.body.id;
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        await request(app).post("/vagasExames").send({
+            dataExame: date_string,
+            quantidade: 5,
+            local: "Cang",
+            exame_id: exame_id
+        });
+
+        date.setDate(date.getDate() + 1);
+        date_string = FormatDate.format(date);
+
+        await request(app).post("/vagasExames").send({
+            dataExame: date_string,
+            quantidade: 5,
+            local: "Cang",
+            exame_id: exame_id
+        });
+
+        const response = await request(app).get(`/exames/${exame_id}/vagas`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(2);
+    })
+
+    it("Should return a 404 error if exame ID does not exist when searching for vacancies", async () => {
+        const exame_id = uuid();
+
+        const response = await request(app).get(`/exames/${exame_id}/vagas`);
+
+        expect(response.status).toBe(404);
+    })
 })

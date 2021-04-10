@@ -75,7 +75,7 @@ class VagaExamesController {
         return response.status(200).json(result);
     }
 
-    async showVagasByID(request: Request, response: Response) {
+    async showVagasByExameID(request: Request, response: Response) {
         const examesRepository = getCustomRepository(ExamesRepository);
 
         const IDExameRequest = request.params.id;
