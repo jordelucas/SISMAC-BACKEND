@@ -160,4 +160,42 @@ describe("vagasConsultas", () => {
 
         expect(response.status).toBe(404);
     })
+
+    it("Should not create a new VagaConsultas if any value is null", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        })
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const response = await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: consulta.body.id
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("Should return 400 if date is out of range", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        })
+
+        var date_string = "2021/05/35";
+
+        const response = await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: consulta.body.id
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
