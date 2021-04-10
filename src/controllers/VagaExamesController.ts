@@ -10,6 +10,7 @@ class VagaExamesController {
             local,
             exame_id
         } = request.body;
+        const disponivel = quantidade;
 
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
 
@@ -40,6 +41,7 @@ class VagaExamesController {
         const vagaExame = vagaExamesRepository.create({
             dataExame,
             quantidade,
+            disponivel,
             local,
             exame_id
         })

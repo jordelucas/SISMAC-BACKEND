@@ -16,6 +16,9 @@ class VagaConsultas {
     quantidade: number;
 
     @Column()
+    disponivel: number;
+
+    @Column()
     local: string;
 
     @Column()

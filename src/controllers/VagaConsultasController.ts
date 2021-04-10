@@ -11,6 +11,7 @@ class VagaConsultasController {
             local,
             consulta_id
         } = request.body;
+        const disponivel = quantidade;
 
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
 
@@ -42,6 +43,7 @@ class VagaConsultasController {
             nomeEspecialista,
             dataConsulta,
             quantidade,
+            disponivel,
             local,
             consulta_id
         })

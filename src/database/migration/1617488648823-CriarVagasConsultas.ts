@@ -26,6 +26,10 @@ export class CriarVagasConsultas1617488648823 implements MigrationInterface {
                             type: "int"
                         },
                         {
+                            name: "disponivel",
+                            type: "int"
+                        },
+                        {
                             name: "local",
                             type: "varchar"
                         },
