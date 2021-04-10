@@ -1,7 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
 import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository";
-
+import ValidDate from '../utils/ValidDate';
 class VagaConsultasController {
     async create(request: Request, response: Response) {
 
@@ -13,6 +13,12 @@ class VagaConsultasController {
 
             return response.status(400).json({
                 error: "Null value is not permited!",
+            })
+        }
+
+        if (!ValidDate.isValidDate(request.body.dataConsulta)) {
+            return response.status(400).json({
+                error: "Data out of range!",
             })
         }
 
