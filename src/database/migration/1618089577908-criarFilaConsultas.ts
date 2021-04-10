@@ -46,6 +46,7 @@ export class criarFilaConsultas1618089577908 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable("filaConsultas");
     }
 
 }
