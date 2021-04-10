@@ -4,6 +4,18 @@ import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository
 
 class VagaConsultasController {
     async create(request: Request, response: Response) {
+
+        if (request.body.nomeEspecialista === "" ||
+            request.body.dataConsulta === "" ||
+            request.body.quantidade === null ||
+            request.body.local === "" ||
+            request.body.consulta_id === "") {
+
+            return response.status(400).json({
+                error: "Null value is not permited!",
+            })
+        }
+
         const {
             nomeEspecialista,
             dataConsulta,
@@ -11,6 +23,7 @@ class VagaConsultasController {
             local,
             consulta_id
         } = request.body;
+
         const disponivel = quantidade;
 
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
