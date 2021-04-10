@@ -1,15 +1,43 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
 import { VagaExamesRepository } from '../repositories/VagaExamesRepository';
-
+import ValidDate from '../utils/ValidDate';
 class VagaExamesController {
     async create(request: Request, response: Response) {
+
+        if (request.body.nomeEspecialista === "" ||
+            request.body.dataExame === "" ||
+            request.body.quantidade === null ||
+            request.body.local === "" ||
+            request.body.exame_id === "") {
+
+            return response.status(400).json({
+                error: "Null value is not permited!",
+            })
+        }
+
+        if (!ValidDate.isValidDate(request.body.dataExame)) {
+            return response.status(400).json({
+                error: "Data out of range!",
+            })
+        }
+
+        var today = new Date();
+        var dateDataExame = new Date(request.body.dataExame);
+
+        if (dateDataExame <= today) {
+            return response.status(400).json({
+                error: "dataExame is older then actual data!",
+            })
+        }
+
         const {
             dataExame,
             quantidade,
             local,
             exame_id
         } = request.body;
+
         const disponivel = quantidade;
 
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
@@ -26,15 +54,6 @@ class VagaExamesController {
         if (result.length != 0) {
             return response.status(400).json({
                 error: "Vaga for Exame already exists!",
-            })
-        }
-
-        var today = new Date();
-        var dateDataExame = new Date(dataExame);
-
-        if (dateDataExame <= today) {
-            return response.status(400).json({
-                error: "dataExame is older then actual data!",
             })
         }
 
