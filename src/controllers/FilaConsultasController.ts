@@ -1,6 +1,5 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
-import { app } from '../app';
 import { FilaConsultasRepository } from "../repositories/FilaConsultasRepository"
 import { PacientesRepository } from '../repositories/PacientesRepository';
 import { ConsultasRepository } from '../repositories/ConsultasRepository';
