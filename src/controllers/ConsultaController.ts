@@ -1,6 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
 import { ConsultasRepository } from '../repositories/ConsultasRepository';
+import { VagaConsultasRepository } from '../repositories/VagaConsultasRepository';
 
 class ConsultaController {
     async create(request: Request, response: Response) {
@@ -19,7 +20,7 @@ class ConsultaController {
 
         if (result) {
             return response.status(400).json({
-                error: "Exame already exists!",
+                error: "Consulta already exists!",
             })
         }
 
@@ -53,6 +54,28 @@ class ConsultaController {
         }
 
         return response.status(200).json(result);
+    }
+
+    async showVagasByConsultaID(request: Request, response: Response) {
+        const consultasRepository = getCustomRepository(ConsultasRepository);
+
+        const IDConsultaRequest = request.params.id;
+
+        const filteredConsulta = await consultasRepository.findOne(IDConsultaRequest);
+
+        if (!filteredConsulta) {
+            return response.status(404).json({
+                error: "Consulta not found!",
+            })
+        }
+
+        const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
+
+        const filteredVagasConsulta = await vagaConsultasRepository.find({
+            consulta_id: IDConsultaRequest
+        })
+
+        return response.status(200).json(filteredVagasConsulta);
     }
 }
 
