@@ -198,4 +198,49 @@ describe("vagasConsultas", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("Should be able to find vacancies by consulta ID", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste",
+            autorizacao: true,
+        })
+
+        const consulta_id = consulta.body.id;
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "Antonio",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: consulta_id
+        });
+
+        date.setDate(date.getDate() + 1);
+        date_string = FormatDate.format(date);
+
+        await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "Antonio",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: consulta_id
+        });
+
+        const response = await request(app).get(`/consultas/${consulta_id}/vagas`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(2);
+    })
+
+    it("Should return a 404 error if consulta ID does not exist when searching for vacancies", async () => {
+        const consulta_id = uuid();
+
+        const response = await request(app).get(`/consultas/${consulta_id}/vagas`);
+
+        expect(response.status).toBe(404);
+    })
 })
