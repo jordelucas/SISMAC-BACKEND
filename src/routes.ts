@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { ConsultaController } from "./controllers/ConsultaController";
 import { ExameController } from "./controllers/ExameController";
+import { FilaConsultasController } from "./controllers/FilaConsultasController";
 import { PacienteController } from "./controllers/PacienteController";
 import { VagaConsultasController } from "./controllers/VagaConsultasController";
 import { VagaExamesController } from "./controllers/VagaExamesController";
@@ -12,6 +13,7 @@ const exameController = new ExameController;
 const consultaController = new ConsultaController;
 const vagaConsultasController = new VagaConsultasController;
 const vagaExamesController = new VagaExamesController;
+const filaConsultasController = new FilaConsultasController;
 
 //Endereços
 //Paciente
@@ -40,14 +42,15 @@ router.get("/consultas/:id", consultaController.showByID);
 //Vagas Consultas
 router.post("/vagasConsultas", vagaConsultasController.create);
 router.get("/vagasConsultas", vagaConsultasController.show);
-
 //Rotas para ID de VagasConsultas
 router.get("/vagasConsultas/:id", vagaConsultasController.showByID);
 
 //Vagas Exames
 router.post("/vagasExames", vagaExamesController.create);
 router.get("/vagasExames", vagaExamesController.show);
-
 //Rotas para ID de VagasExames
 router.get("/vagasExames/:id", vagaExamesController.showByID);
+
+//Fila de consultas
+router.post("/filaConsultas", filaConsultasController.create);
 export { router }

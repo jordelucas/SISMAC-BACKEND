@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CriarVagasExames1617759319021 implements MigrationInterface {
+export class criarFilaConsultas1618089577908 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table(
                 {
-                    name: "vagasExames",
+                    name: "filaConsultas",
                     columns: [
                         {
                             name: "id",
@@ -14,32 +14,28 @@ export class CriarVagasExames1617759319021 implements MigrationInterface {
                             isPrimary: true
                         },
                         {
-                            name: "dataExame",
-                            type: "Date"
+                            name: "paciente_id",
+                            type: "uuid"
                         },
                         {
-                            name: "quantidade",
-                            type: "int"
-                        },
-                        {
-                            name: "disponivel",
-                            type: "int"
-                        },
-                        {
-                            name: "local",
-                            type: "varchar"
-                        },
-                        {
-                            name: "exame_id",
+                            name: "consulta_id",
                             type: "uuid"
                         }
                     ],
                     foreignKeys: [
                         {
-                            name: "FKExame",
-                            referencedTableName: "exames",
+                            name: "FKPaciente",
+                            referencedTableName: "pacientes",
                             referencedColumnNames: ["id"],
-                            columnNames: ["exame_id"],
+                            columnNames: ["paciente_id"],
+                            onDelete: "CASCADE",
+                            onUpdate: "CASCADE"
+                        },
+                        {
+                            name: "FKConsulta",
+                            referencedTableName: "consultas",
+                            referencedColumnNames: ["id"],
+                            columnNames: ["consulta_id"],
                             onDelete: "CASCADE",
                             onUpdate: "CASCADE"
                         }
@@ -50,7 +46,7 @@ export class CriarVagasExames1617759319021 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("vagasExames");
+        await queryRunner.dropTable("filaConsultas");
     }
 
 }
