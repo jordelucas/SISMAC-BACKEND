@@ -94,7 +94,7 @@ describe("filaConsultas", () => {
         expect(response.status).toBe(404);
     })
 
-    it("Should return 404 if paciente doesnt exists", async () => {
+    it("Should return 404 if consulta doesnt exists", async () => {
         const id = uuid();
 
         const paciente = await request(app).post("/pacientes").send({
