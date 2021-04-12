@@ -36,6 +36,9 @@ router.get("/consultas", consultaController.show);
 //Rotas para ID de Consultas
 router.get("/consultas/:id", consultaController.showByID);
 
+//Rota para vagas de uma consulta
+router.get("/consultas/:id/vagas", consultaController.showVagasByConsultaID);
+
 //Vagas Consultas
 router.post("/vagasConsultas", vagaConsultasController.create);
 router.get("/vagasConsultas", vagaConsultasController.show);
