@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 import createConnection from '../database';
 let connection: Connection;
 
-describe("filaConsultas", () => {
+describe("filaExames", () => {
     beforeAll(async () => {
         connection = await createConnection();
         await connection.runMigrations();
@@ -23,7 +23,7 @@ describe("filaConsultas", () => {
         await connection.close();
     })
 
-    it("Should be able to create a new member on FilaConsultas", async () => {
+    it("Should be able to create a new member on FilaExames", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "123123123",
             nsus: "111111111",
@@ -36,20 +36,21 @@ describe("filaConsultas", () => {
             telefone: "8494984499"
         });
 
-        const consulta = await request(app).post("/consultas").send({
-            nome: "teste"
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true
         })
 
-        const response = await request(app).post("/filaConsultas").send({
+        const response = await request(app).post("/filaExames").send({
             paciente_id: paciente.body.id,
-            consulta_id: consulta.body.id
+            exame_id: exame.body.id
         })
 
         expect(response.status).toBe(201);
         expect(response.body).toHaveProperty("id");
     })
 
-    it("Should not create a new member in FilaConsultas if already exists", async () => {
+    it("Should not create a new member in FilaExames if already exists", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "123123123",
             nsus: "111111111",
@@ -62,18 +63,19 @@ describe("filaConsultas", () => {
             telefone: "8494984499"
         });
 
-        const consulta = await request(app).post("/consultas").send({
-            nome: "teste"
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true
         })
 
-        await request(app).post("/filaConsultas").send({
+        await request(app).post("/filaExames").send({
             paciente_id: paciente.body.id,
-            consulta_id: consulta.body.id
+            exame_id: exame.body.id
         })
 
-        const response = await request(app).post("/filaConsultas").send({
+        const response = await request(app).post("/filaExames").send({
             paciente_id: paciente.body.id,
-            consulta_id: consulta.body.id
+            exame_id: exame.body.id
         })
 
         expect(response.status).toBe(400);
@@ -82,19 +84,20 @@ describe("filaConsultas", () => {
     it("Should return 404 if paciente doesnt exists", async () => {
         const id = uuid();
 
-        const consulta = await request(app).post("/consultas").send({
-            nome: "teste"
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true
         })
 
-        const response = await request(app).post("/filaConsultas").send({
+        const response = await request(app).post("/filaExames").send({
             paciente_id: id,
-            consulta_id: consulta.body.id
+            exame_id: exame.body.id
         })
 
         expect(response.status).toBe(404);
     })
 
-    it("Should return 404 if consulta doesnt exists", async () => {
+    it("Should return 404 if exame doesnt exists", async () => {
         const id = uuid();
 
         const paciente = await request(app).post("/pacientes").send({
@@ -109,9 +112,9 @@ describe("filaConsultas", () => {
             telefone: "8494984499"
         });
 
-        const response = await request(app).post("/filaConsultas").send({
+        const response = await request(app).post("/filaExames").send({
             paciente_id: paciente.body.id,
-            consulta_id: id
+            exame_id: id
         })
 
         expect(response.status).toBe(404);
