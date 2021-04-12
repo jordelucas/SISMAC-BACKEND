@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-@Entity("filaConsultas")
-class FilaConsultas {
+@Entity("filaExames")
+class FilaExames {
     @PrimaryColumn()
     readonly id: string;
 
@@ -10,7 +10,7 @@ class FilaConsultas {
     paciente_id: string;
 
     @Column()
-    consulta_id: string;
+    exame_id: string;
 
     constructor() {
         if (!this.id) {
@@ -19,4 +19,4 @@ class FilaConsultas {
     }
 }
 
-export { FilaConsultas }
+export { FilaExames }
