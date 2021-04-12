@@ -1,6 +1,8 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
 import { VagaExamesRepository } from '../repositories/VagaExamesRepository';
+import { ExamesRepository } from '../repositories/ExamesRepository';
+
 import ValidDate from '../utils/ValidDate';
 class VagaExamesController {
     async create(request: Request, response: Response) {
@@ -93,6 +95,28 @@ class VagaExamesController {
         }
 
         return response.status(200).json(result);
+    }
+
+    async showVagasByExameID(request: Request, response: Response) {
+        const examesRepository = getCustomRepository(ExamesRepository);
+
+        const IDExameRequest = request.params.id;
+
+        const filteredExame = await examesRepository.findOne(IDExameRequest);
+
+        if (!filteredExame) {
+            return response.status(404).json({
+                error: "Exame not found!",
+            })
+        }
+
+        const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
+
+        const filteredVagasExame = await vagaExamesRepository.find({
+            exame_id: IDExameRequest
+        })
+
+        return response.status(200).json(filteredVagasExame);
     }
 }
 
