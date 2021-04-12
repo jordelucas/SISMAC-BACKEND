@@ -13,12 +13,12 @@ class FilaExamesController {
         } = request.body;
 
         const pacienteRepository = getCustomRepository(PacientesRepository);
-        const consultaRepository = getCustomRepository(ExamesRepository);
+        const exameRepository = getCustomRepository(ExamesRepository);
         const filaExamesRepository = getCustomRepository(FilaExamesRepository);
 
         const pacienteResult = await pacienteRepository.findOne(paciente_id);
 
-        const exameResult = await consultaRepository.findOne(exame_id);
+        const exameResult = await exameRepository.findOne(exame_id);
 
         if (!pacienteResult) {
             return response.status(404).json({
