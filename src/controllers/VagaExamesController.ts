@@ -10,7 +10,7 @@ class VagaExamesController {
 
         const resquestSize = Object.keys(request.body).length;
 
-        if (CheckEmptyFields.check(request) || resquestSize < 5) {
+        if (CheckEmptyFields.check(request) || resquestSize < 4) {
             return response.status(400).json({
                 error: "there are not enough values!",
             })
