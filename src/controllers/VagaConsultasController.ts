@@ -1,18 +1,15 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
 import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository";
+
 import ValidDate from '../utils/ValidDate';
+import CheckEmptyFields from '../utils/CheckEmptyFields';
 class VagaConsultasController {
     async create(request: Request, response: Response) {
 
-        if (request.body.nomeEspecialista === "" ||
-            request.body.dataConsulta === "" ||
-            request.body.quantidade === null ||
-            request.body.local === "" ||
-            request.body.consulta_id === "") {
-
+        if (CheckEmptyFields.check(request)) {
             return response.status(400).json({
-                error: "Null value is not permited!",
+                error: "there are not enough values!",
             })
         }
 

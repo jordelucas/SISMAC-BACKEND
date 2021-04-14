@@ -4,8 +4,15 @@ import { FilaExamesRepository } from "../repositories/FilaExamesRepository"
 import { PacientesRepository } from '../repositories/PacientesRepository';
 import { ExamesRepository } from '../repositories/ExamesRepository';
 
+import CheckEmptyFields from '../utils/CheckEmptyFields';
 class FilaExamesController {
     async create(request: Request, response: Response) {
+
+        if (CheckEmptyFields.check(request)) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
 
         const {
             paciente_id,

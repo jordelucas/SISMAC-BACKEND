@@ -4,17 +4,13 @@ import { VagaExamesRepository } from '../repositories/VagaExamesRepository';
 import { ExamesRepository } from '../repositories/ExamesRepository';
 
 import ValidDate from '../utils/ValidDate';
+import CheckEmptyFields from '../utils/CheckEmptyFields';
 class VagaExamesController {
     async create(request: Request, response: Response) {
 
-        if (request.body.nomeEspecialista === "" ||
-            request.body.dataExame === "" ||
-            request.body.quantidade === null ||
-            request.body.local === "" ||
-            request.body.exame_id === "") {
-
+        if (CheckEmptyFields.check(request)) {
             return response.status(400).json({
-                error: "Null value is not permited!",
+                error: "there are not enough values!",
             })
         }
 
