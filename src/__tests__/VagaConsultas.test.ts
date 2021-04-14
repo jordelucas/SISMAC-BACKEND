@@ -161,6 +161,24 @@ describe("vagasConsultas", () => {
         expect(response.status).toBe(404);
     })
 
+    it("Should return 404 if consulta doesnt exists", async () => {
+        const id = uuid();
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const response = await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "jose",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: id
+        });
+
+        expect(response.status).toBe(404);
+    })
+
     it("Should not create a new VagaConsultas if any value is null", async () => {
         const consulta = await request(app).post("/consultas").send({
             nome: "teste"

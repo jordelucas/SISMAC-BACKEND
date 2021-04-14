@@ -41,6 +41,15 @@ class VagaExamesController {
         const disponivel = quantidade;
 
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
+        const exameRepository = getCustomRepository(ExamesRepository);
+
+        const exameResult = await exameRepository.findOne(exame_id);
+
+        if (!exameResult) {
+            return response.status(404).json({
+                error: "Exame not found!",
+            })
+        }
 
         const result = await vagaExamesRepository.find({
             where: [
