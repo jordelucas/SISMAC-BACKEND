@@ -2,6 +2,6 @@ import { Request } from "express";
 
 export default class CheckEmptyFields {
     static check(request: Request) {
-        return Object.keys(request.body).every((key: string) => request.body[key] == "" || request.body[key] == null);
+        return Object.keys(request.body).some((param: string) => request.body[param] === "" || request.body[param] === null);
     }
 }

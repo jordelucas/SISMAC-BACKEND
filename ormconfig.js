@@ -3,7 +3,6 @@ module.exports = [
         "name": process.env.ENV_LOCAL,
         "type": "postgres",
         "url": process.env.DATABASE_URL,
-        "synchronize": true,
         "logging": true,
         "migrations": [
             process.env.MIGRATIONS_PATH

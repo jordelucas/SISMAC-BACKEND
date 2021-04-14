@@ -8,7 +8,9 @@ import CheckEmptyFields from '../utils/CheckEmptyFields';
 class FilaConsultasController {
     async create(request: Request, response: Response) {
 
-        if (CheckEmptyFields.check(request)) {
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 2) {
             return response.status(400).json({
                 error: "there are not enough values!",
             })
