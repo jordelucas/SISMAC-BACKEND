@@ -50,6 +50,21 @@ describe("pacientes", () => {
         expect(response.status).toBe(400);
     })
 
+    it("Should not be able to create a new Pacient if any value is null", async () => {
+        const response = await request(app).post("/pacientes").send({
+            cpf: "123123122",
+            nsus: "111111111",
+            nome: "",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998-10-31",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+    })
+
     it("Should be able to get all Pacientes", async () => {
         await request(app).post("/pacientes").send({
             cpf: "1231234",
