@@ -32,7 +32,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -58,7 +58,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -88,7 +88,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -129,7 +129,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 

@@ -26,7 +26,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -43,7 +43,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -58,7 +58,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -74,7 +74,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -92,7 +92,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -116,7 +116,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -140,7 +140,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -152,7 +152,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -174,7 +174,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -203,7 +203,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -227,7 +227,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -239,10 +239,25 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
         expect(response.status).toBe(200);
+    })
+
+    it("Should return 400 if date is out of range", async () => {
+        const response = await request(app).post("/pacientes").send({
+            cpf: "12312312266",
+            nsus: "11111111166",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/50",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
     })
 });

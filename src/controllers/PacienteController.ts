@@ -3,6 +3,7 @@ import { getCustomRepository, Like } from "typeorm";
 import { PacientesRepository } from "../repositories/PacientesRepository";
 
 import CheckEmptyFields from "../utils/CheckEmptyFields";
+import ValidDate from "../utils/ValidDate";
 class PacienteController {
     async create(request: Request, response: Response) {
 
@@ -11,6 +12,12 @@ class PacienteController {
         if (CheckEmptyFields.check(request) || resquestSize < 9) {
             return response.status(400).json({
                 error: "there are not enough values!",
+            })
+        }
+
+        if (!ValidDate.isValidDate(request.body.dtNascimento)) {
+            return response.status(400).json({
+                error: "Data out of range!",
             })
         }
 
