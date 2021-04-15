@@ -1,18 +1,18 @@
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from "express";
 import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository";
+import { ConsultasRepository } from '../repositories/ConsultasRepository';
+
 import ValidDate from '../utils/ValidDate';
+import CheckEmptyFields from '../utils/CheckEmptyFields';
 class VagaConsultasController {
     async create(request: Request, response: Response) {
 
-        if (request.body.nomeEspecialista === "" ||
-            request.body.dataConsulta === "" ||
-            request.body.quantidade === null ||
-            request.body.local === "" ||
-            request.body.consulta_id === "") {
+        const resquestSize = Object.keys(request.body).length;
 
+        if (CheckEmptyFields.check(request) || resquestSize < 5) {
             return response.status(400).json({
-                error: "Null value is not permited!",
+                error: "there are not enough values!",
             })
         }
 
@@ -33,6 +33,15 @@ class VagaConsultasController {
         const disponivel = quantidade;
 
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
+        const consultaRepository = getCustomRepository(ConsultasRepository);
+
+        const consultaResult = await consultaRepository.findOne(consulta_id);
+
+        if (!consultaResult) {
+            return response.status(404).json({
+                error: "Consulta not found!",
+            })
+        }
 
         const result = await vagaConsultasRepository.find({
             where: [

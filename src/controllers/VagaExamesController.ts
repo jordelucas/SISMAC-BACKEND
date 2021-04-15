@@ -4,17 +4,15 @@ import { VagaExamesRepository } from '../repositories/VagaExamesRepository';
 import { ExamesRepository } from '../repositories/ExamesRepository';
 
 import ValidDate from '../utils/ValidDate';
+import CheckEmptyFields from '../utils/CheckEmptyFields';
 class VagaExamesController {
     async create(request: Request, response: Response) {
 
-        if (request.body.nomeEspecialista === "" ||
-            request.body.dataExame === "" ||
-            request.body.quantidade === null ||
-            request.body.local === "" ||
-            request.body.exame_id === "") {
+        const resquestSize = Object.keys(request.body).length;
 
+        if (CheckEmptyFields.check(request) || resquestSize < 4) {
             return response.status(400).json({
-                error: "Null value is not permited!",
+                error: "there are not enough values!",
             })
         }
 
@@ -43,6 +41,15 @@ class VagaExamesController {
         const disponivel = quantidade;
 
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
+        const exameRepository = getCustomRepository(ExamesRepository);
+
+        const exameResult = await exameRepository.findOne(exame_id);
+
+        if (!exameResult) {
+            return response.status(404).json({
+                error: "Exame not found!",
+            })
+        }
 
         const result = await vagaExamesRepository.find({
             where: [

@@ -3,10 +3,13 @@ import { Request, Response } from "express";
 import { ConsultasRepository } from '../repositories/ConsultasRepository';
 import { VagaConsultasRepository } from '../repositories/VagaConsultasRepository';
 
+import CheckEmptyFields from '../utils/CheckEmptyFields';
 class ConsultaController {
     async create(request: Request, response: Response) {
 
-        if (request.body.nome === "") {
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 1) {
             return response.status(400).json({
                 error: "there are not enough values!",
             })

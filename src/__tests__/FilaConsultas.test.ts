@@ -32,7 +32,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -58,7 +58,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -73,6 +73,30 @@ describe("filaConsultas", () => {
 
         const response = await request(app).post("/filaConsultas").send({
             paciente_id: paciente.body.id,
+            consulta_id: consulta.body.id
+        })
+
+        expect(response.status).toBe(400);
+    })
+
+    it("Should not create a new member in FilaConsultas if any value is null", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "123123123",
+            nsus: "111111111",
+            nome: "clev",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/31",
+            telefone: "8494984499"
+        });
+
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        })
+
+        const response = await request(app).post("/filaConsultas").send({
             consulta_id: consulta.body.id
         })
 
@@ -105,7 +129,7 @@ describe("filaConsultas", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 

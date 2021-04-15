@@ -2,8 +2,25 @@ import { Request, Response } from "express";
 import { getCustomRepository, Like } from "typeorm";
 import { PacientesRepository } from "../repositories/PacientesRepository";
 
+import CheckEmptyFields from "../utils/CheckEmptyFields";
+import ValidDate from "../utils/ValidDate";
 class PacienteController {
     async create(request: Request, response: Response) {
+
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 9) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
+        if (!ValidDate.isValidDate(request.body.dtNascimento)) {
+            return response.status(400).json({
+                error: "Data out of range!",
+            })
+        }
+
         const {
             cpf,
             nsus,
@@ -56,19 +73,19 @@ class PacienteController {
         const nsus = request.query.nsus as string;
 
         if (nsus) {
-            const filteredByNsus = await pacientesRepository.findOne({nsus});
+            const filteredByNsus = await pacientesRepository.findOne({ nsus });
 
             return response.json(filteredByNsus);
         }
 
         if (cpf) {
-            const filteredByCpf = await pacientesRepository.findOne({cpf});
+            const filteredByCpf = await pacientesRepository.findOne({ cpf });
 
             return response.json(filteredByCpf);
         }
 
         if (nome) {
-            const filteredByCpf = await pacientesRepository.find({nome: Like(`%${nome}%`)});
+            const filteredByCpf = await pacientesRepository.find({ nome: Like(`%${nome}%`) });
 
             return response.json(filteredByCpf);
         }
@@ -106,7 +123,7 @@ class PacienteController {
                 error: "Paciente not found!",
             })
         }
-  
+
         await pacientesRepository.delete(result);
 
         return response.status(200).json({
@@ -120,13 +137,13 @@ class PacienteController {
         const IDRequest = request.params.id;
 
         const result = await pacientesRepository.findOne(IDRequest);
-        
+
         if (!result) {
             return response.status(404).json({
                 error: "Paciente not found!",
             })
         }
-        
+
         await pacientesRepository.update(IDRequest, request.body);
 
         return response.status(200).json(request.body);

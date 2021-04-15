@@ -2,10 +2,13 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { ExamesRepository } from "../repositories/ExamesRepository";
 
+import CheckEmptyFields from "../utils/CheckEmptyFields";
 class ExameController {
     async create(request: Request, response: Response) {
 
-        if (request.body.nome === "") {
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 2) {
             return response.status(400).json({
                 error: "there are not enough values!",
             })

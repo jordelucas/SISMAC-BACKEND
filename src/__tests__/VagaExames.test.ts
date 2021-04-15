@@ -73,6 +73,42 @@ describe("vagasExames", () => {
         expect(response2.status).toBe(400);
     })
 
+    it("Should not be able to create a new VagaExame if any value is null", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true,
+        })
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const response = await request(app).post("/vagasExames").send({
+            dataExame: date_string,
+            local: "",
+            exame_id: exame.body.id
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("Should return 404 if exame doesnt exists", async () => {
+        const id = uuid();
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const response = await request(app).post("/vagasExames").send({
+            dataExame: date_string,
+            quantidade: 5,
+            local: "Cang",
+            exame_id: id
+        });
+
+        expect(response.status).toBe(404);
+    })
+
     it("Should not be able to create a new VagaExame if the date is older than the current date", async () => {
         const exame = await request(app).post("/exames").send({
             nome: "teste",
