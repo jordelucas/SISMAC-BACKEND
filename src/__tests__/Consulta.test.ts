@@ -63,4 +63,28 @@ describe("consultas", () => {
         expect(response.status).toBe(200);
 
     })
+
+    it("Should update a Consulta with the new informations", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste4"
+        });
+
+        const response = await request(app).put("/consultas/" + consulta.body.id).send({
+            nome: "teste5"
+        });
+
+        expect(response.status).toBe(200);
+    })
+
+    it("Should not update a Consulta it has any null value", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste4"
+        });
+
+        const response = await request(app).put("/consultas/" + consulta.body.id).send({
+            nome: ""
+        });
+
+        expect(response.status).toBe(400);
+    })
 })

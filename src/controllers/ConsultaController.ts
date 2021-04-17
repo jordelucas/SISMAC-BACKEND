@@ -80,6 +80,33 @@ class ConsultaController {
 
         return response.status(200).json(filteredVagasConsulta);
     }
+
+    async update(request: Request, response: Response) {
+        const consultasRepository = getCustomRepository(ConsultasRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await consultasRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Consulta not found!",
+            })
+        }
+        //TODO Fazer verificações de nome ignorando maiúscula
+
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 1) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
+        await consultasRepository.update(IDRequest, request.body);
+
+        return response.status(200).json(request.body);
+    }
 }
 
 export { ConsultaController }
