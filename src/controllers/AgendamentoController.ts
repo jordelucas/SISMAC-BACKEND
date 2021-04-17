@@ -1,0 +1,4 @@
+class AgendamentoController {
+}
+
+export { AgendamentoController }
