@@ -27,6 +27,7 @@ class ExameController {
 
         const examesRepository = getCustomRepository(ExamesRepository);
 
+        //TODO Verificação com case insenstive
         const result = await examesRepository.findOne({ nome })
 
         if (result) {

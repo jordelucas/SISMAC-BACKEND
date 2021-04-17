@@ -21,6 +21,7 @@ class ConsultaController {
 
         const result = await consultasRepository.findOne({ nome })
 
+        //TODO Verificação com case insenstive
         if (result) {
             return response.status(400).json({
                 error: "Consulta already exists!",
@@ -101,7 +102,6 @@ class ConsultaController {
                 error: "Consulta not found!",
             })
         }
-        //TODO Fazer verificações de nome ignorando maiúscula
 
         const nameResponse = await consultasRepository.find(
             {

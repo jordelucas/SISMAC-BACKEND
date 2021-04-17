@@ -23,6 +23,7 @@ router.post("/pacientes", pacienteController.create);
 router.get("/pacientes", pacienteController.show);
 //Rotas para ID de pacientes
 router.get("/pacientes/:id", pacienteController.showByID);
+router.get("/pacientes/:id/agendamentos", pacienteController.showSchedules);
 router.delete("/pacientes/:id", pacienteController.delete);
 router.put("/pacientes/:id", pacienteController.update);
 
