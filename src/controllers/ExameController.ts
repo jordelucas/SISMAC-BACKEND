@@ -68,6 +68,32 @@ class ExameController {
 
         return response.status(200).json(result);
     }
+
+    async update(request: Request, response: Response) {
+        const examesRepository = getCustomRepository(ExamesRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await examesRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Exame not found!",
+            })
+        }
+
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 2) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
+        await examesRepository.update(IDRequest, request.body);
+
+        return response.status(200).json(request.body);
+    }
 }
 
 export { ExameController }

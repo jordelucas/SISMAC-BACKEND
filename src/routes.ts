@@ -31,6 +31,7 @@ router.post("/exames", exameController.create);
 router.get("/exames", exameController.show);
 //Rotas para ID de Exames
 router.get("/exames/:id", exameController.showByID);
+router.put("/exames/:id", exameController.update);
 
 //Rota para vaga de um exame
 router.get("/exames/:id/vagas", vagaExamesController.showVagasByExameID);

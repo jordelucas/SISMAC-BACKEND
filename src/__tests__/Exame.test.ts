@@ -85,4 +85,32 @@ describe("exames", () => {
 
         expect(response.status).toBe(404);
     })
+
+    it("Should update a Exame with the new informations", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "teste3",
+            autorizacao: true
+        });
+
+        const response = await request(app).put("/exames/" + exame.body.id).send({
+            nome: "teste4",
+            autorizacao: false
+        });
+
+        expect(response.status).toBe(200);
+    })
+
+    it("Should not update a Exame if the new value is empty", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "teste3",
+            autorizacao: true
+        });
+
+        const response = await request(app).put("/exames/" + exame.body.id).send({
+            nome: "",
+            autorizacao: false
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
