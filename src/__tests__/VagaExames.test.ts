@@ -275,4 +275,6 @@ describe("vagasExames", () => {
 
         expect(response.status).toBe(404);
     })
+
+    //TODO teste de GET de agendamentos para uma vaga
 })
