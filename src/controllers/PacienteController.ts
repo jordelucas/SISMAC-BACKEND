@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getCustomRepository, Like } from "typeorm";
+import { AgendamentosRepository } from "../repositories/AgendamentoRepository";
 import { PacientesRepository } from "../repositories/PacientesRepository";
 
 import CheckEmptyFields from "../utils/CheckEmptyFields";
@@ -147,11 +148,41 @@ class PacienteController {
                 error: "Paciente not found!",
             })
         }
-
+        //TODO verificação de alteração para CPF já existente
         await pacientesRepository.update(IDRequest, request.body);
 
         return response.status(200).json(request.body);
     }
+
+    async showSchedules(request: Request, response: Response) {
+        const pacientesRepository = getCustomRepository(PacientesRepository);
+        const agendamentosRepository = getCustomRepository(AgendamentosRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await pacientesRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Vaga not found!",
+            })
+        }
+
+        const schedules = await agendamentosRepository.find({
+            where: {
+                paciente_id: IDRequest
+            }
+        })
+
+        if (schedules.length == 0) {
+            return response.status(404).json({
+                error: "There is no schedule for that pacient",
+            })
+        }
+
+        return response.status(200).json(schedules);
+    }
+
 }
 
 export { PacienteController };
