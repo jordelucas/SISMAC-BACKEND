@@ -82,6 +82,14 @@ class ExameController {
             })
         }
 
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 2) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
         await examesRepository.update(IDRequest, request.body);
 
         return response.status(200).json(request.body);
