@@ -95,7 +95,14 @@ class ConsultaController {
         }
         //TODO Fazer verificações de nome ignorando maiúscula
 
-        //TODO Fazer verificações de nome igual a um que já existe
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 1) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
         await consultasRepository.update(IDRequest, request.body);
 
         return response.status(200).json(request.body);
