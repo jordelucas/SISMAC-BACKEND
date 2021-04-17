@@ -5,6 +5,8 @@ import { ExamesRepository } from '../repositories/ExamesRepository';
 
 import ValidDate from '../utils/ValidDate';
 import CheckEmptyFields from '../utils/CheckEmptyFields';
+import { AgendamentosRepository } from '../repositories/AgendamentoRepository';
+
 class VagaExamesController {
     async create(request: Request, response: Response) {
 
@@ -124,6 +126,30 @@ class VagaExamesController {
         })
 
         return response.status(200).json(filteredVagasExame);
+    }
+
+    async showScheduling(request: Request, response: Response) {
+        const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
+        const agendamentosRepository = getCustomRepository(AgendamentosRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await vagaExamesRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Vaga not found!",
+            })
+        }
+
+        const schedules = await agendamentosRepository.find({
+            where: {
+                type: "exame",
+                vaga_id: IDRequest,
+            }
+        })
+
+        return response.status(200).json(schedules);
     }
 }
 

@@ -58,6 +58,7 @@ router.post("/vagasExames", vagaExamesController.create);
 router.get("/vagasExames", vagaExamesController.show);
 //Rotas para ID de VagasExames
 router.get("/vagasExames/:id", vagaExamesController.showByID);
+router.get("/vagasExames/:id/agendamentos", vagaExamesController.showScheduling);
 
 //Fila de consultas
 router.post("/filaConsultas", filaConsultasController.create);

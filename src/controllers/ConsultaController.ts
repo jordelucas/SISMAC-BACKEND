@@ -4,6 +4,7 @@ import { ConsultasRepository } from '../repositories/ConsultasRepository';
 import { VagaConsultasRepository } from '../repositories/VagaConsultasRepository';
 
 import CheckEmptyFields from '../utils/CheckEmptyFields';
+
 class ConsultaController {
     async create(request: Request, response: Response) {
 
