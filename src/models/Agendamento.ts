@@ -10,7 +10,7 @@ class Agendamento {
     paciente_id: string;
 
     @Column()
-    id_vaga: string;
+    vaga_id: string;
 
     @Column()
     type: string;

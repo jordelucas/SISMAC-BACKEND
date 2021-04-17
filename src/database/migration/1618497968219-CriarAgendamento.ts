@@ -18,7 +18,7 @@ export class CriarAgendamento1618497968219 implements MigrationInterface {
                             type: "uuid"
                         },
                         {
-                            name: "id_vaga",
+                            name: "vaga_id",
                             type: "uuid"
                         },
                         {
