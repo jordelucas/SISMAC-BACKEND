@@ -46,6 +46,40 @@ class AgendamentoController {
       } while(qtd_vacancies > 0);
     })
 
+    /* - - - - -  Agendamento de consultas - - - - - */
+    const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository)
+    const filaConsultasRepository = getCustomRepository(FilaConsultasRepository)
+    
+    const consultationWithVacancies = await vagaConsultasRepository.find({
+      disponivel: MoreThan(0),
+    });
+
+    consultationWithVacancies.map(async (vacancy) => {
+      let qtd_vacancies = vacancy.disponivel;
+
+      const requests = await filaConsultasRepository.find({
+        consulta_id: vacancy.consulta_id,
+      });
+
+      do {
+        const firstRequest = requests.shift();
+
+        if (firstRequest) {
+          await filaConsultasRepository.delete(firstRequest);
+          await vagaConsultasRepository.update(vacancy.id, { disponivel: --qtd_vacancies });
+
+          const schedule = agendamentoRepository.create({
+            paciente_id: firstRequest.paciente_id,
+            vaga_id: vacancy.id,
+            type: "consulta",
+          })
+
+          await agendamentoRepository.save(schedule);
+        } else {
+          break;
+        }
+      } while(qtd_vacancies > 0);
+    })
     
     return response.status(201).json({ message: "ok"});
   }
