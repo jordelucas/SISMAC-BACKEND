@@ -85,9 +85,13 @@ class PacienteController {
         }
 
         if (nome) {
-            const filteredByCpf = await pacientesRepository.find({ nome: Like(`%${nome}%`) });
+            const filteredByName = await pacientesRepository.find(
+                {
+                    where: `"nome" ILIKE '%${nome}%'`
+                }
+            );
 
-            return response.json(filteredByCpf);
+            return response.json(filteredByName);
         }
 
         const all = await pacientesRepository.find();

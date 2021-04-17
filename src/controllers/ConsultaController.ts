@@ -82,6 +82,14 @@ class ConsultaController {
     }
 
     async update(request: Request, response: Response) {
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 1) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
         const consultasRepository = getCustomRepository(ConsultasRepository);
 
         const IDRequest = request.params.id;
@@ -95,11 +103,15 @@ class ConsultaController {
         }
         //TODO Fazer verificações de nome ignorando maiúscula
 
-        const resquestSize = Object.keys(request.body).length;
+        const nameResponse = await consultasRepository.find(
+            {
+                where: `"nome" ILIKE '${request.body.nome}'`
+            }
+        );
 
-        if (CheckEmptyFields.check(request) || resquestSize < 1) {
+        if (nameResponse.length != 0) {
             return response.status(400).json({
-                error: "there are not enough values!",
+                error: "Consulta already exists with this name!",
             })
         }
 

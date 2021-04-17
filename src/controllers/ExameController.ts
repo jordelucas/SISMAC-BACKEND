@@ -70,6 +70,15 @@ class ExameController {
     }
 
     async update(request: Request, response: Response) {
+
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 2) {
+            return response.status(400).json({
+                error: "there are not enough values!",
+            })
+        }
+
         const examesRepository = getCustomRepository(ExamesRepository);
 
         const IDRequest = request.params.id;
@@ -82,11 +91,15 @@ class ExameController {
             })
         }
 
-        const resquestSize = Object.keys(request.body).length;
+        const nameResponse = await examesRepository.find(
+            {
+                where: `"nome" ILIKE '${request.body.nome}'`
+            }
+        );
 
-        if (CheckEmptyFields.check(request) || resquestSize < 2) {
+        if (nameResponse.length != 0) {
             return response.status(400).json({
-                error: "there are not enough values!",
+                error: "Consulta already exists with this name!",
             })
         }
 
