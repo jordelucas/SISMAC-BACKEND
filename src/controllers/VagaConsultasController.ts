@@ -129,12 +129,6 @@ class VagaConsultasController {
             }
         })
 
-        if (schedules.length == 0) {
-            return response.status(404).json({
-                error: "There is no schedule for that date",
-            })
-        }
-
         return response.status(200).json(schedules);
     }
 }
