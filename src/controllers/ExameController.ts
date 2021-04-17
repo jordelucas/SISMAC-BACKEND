@@ -91,7 +91,17 @@ class ExameController {
             })
         }
 
+        const nameResponse = await examesRepository.find(
+            {
+                where: `"nome" ILIKE '${request.body.nome}'`
+            }
+        );
 
+        if (nameResponse.length != 0) {
+            return response.status(400).json({
+                error: "Consulta already exists with this name!",
+            })
+        }
 
         await examesRepository.update(IDRequest, request.body);
 

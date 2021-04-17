@@ -113,4 +113,16 @@ describe("exames", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("Should not update a Exame the name value already exists", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "teste6"
+        });
+
+        const response = await request(app).put("/exames/" + exame.body.id).send({
+            nome: "teste4"
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
