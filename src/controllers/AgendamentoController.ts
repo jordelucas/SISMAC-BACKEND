@@ -7,8 +7,7 @@ import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository
 import { VagaExamesRepository } from "../repositories/VagaExamesRepository";
 
 class AgendamentoController {
-  async toSchedule(request: Request, response: Response) {
-    
+  async toSchedule() {    
     const agendamentoRepository = getCustomRepository(AgendamentosRepository)
     
     /* - - - - -  Agendamento de exames - - - - - */
@@ -80,8 +79,6 @@ class AgendamentoController {
         }
       } while(qtd_vacancies > 0);
     })
-    
-    return response.status(201).json({ message: "ok"});
   }
 }
 
