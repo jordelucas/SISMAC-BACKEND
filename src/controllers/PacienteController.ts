@@ -164,7 +164,7 @@ class PacienteController {
 
         if (!result) {
             return response.status(404).json({
-                error: "Vaga not found!",
+                error: "Paciente not found!",
             })
         }
 
@@ -173,12 +173,6 @@ class PacienteController {
                 paciente_id: IDRequest
             }
         })
-
-        if (schedules.length == 0) {
-            return response.status(404).json({
-                error: "There is no schedule for that pacient",
-            })
-        }
 
         return response.status(200).json(schedules);
     }
