@@ -80,6 +80,26 @@ class ConsultaController {
 
         return response.status(200).json(filteredVagasConsulta);
     }
+
+    async update(request: Request, response: Response) {
+        const consultasRepository = getCustomRepository(ConsultasRepository);
+
+        const IDRequest = request.params.id;
+
+        const result = await consultasRepository.findOne(IDRequest);
+
+        if (!result) {
+            return response.status(404).json({
+                error: "Consulta not found!",
+            })
+        }
+        //TODO Fazer verificações de nome ignorando maiúscula
+
+        //TODO Fazer verificações de nome igual a um que já existe
+        await consultasRepository.update(IDRequest, request.body);
+
+        return response.status(200).json(request.body);
+    }
 }
 
 export { ConsultaController }
