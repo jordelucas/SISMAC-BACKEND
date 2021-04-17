@@ -87,4 +87,16 @@ describe("consultas", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("Should not update a Consulta the name value already exists", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste6"
+        });
+
+        const response = await request(app).put("/consultas/" + consulta.body.id).send({
+            nome: "teste4"
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
