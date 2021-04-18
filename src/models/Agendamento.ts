@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Paciente } from "./Paciente";
 
 @Entity("agendamentos")
 class Agendamento {
@@ -8,6 +9,10 @@ class Agendamento {
 
     @Column()
     paciente_id: string;
+
+    @ManyToOne(() => Paciente)
+    @JoinColumn({name: "paciente_id"})
+    paciente: Paciente
 
     @Column()
     vaga_id: string;

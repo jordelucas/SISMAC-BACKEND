@@ -129,27 +129,42 @@ class VagaExamesController {
     }
 
     async showScheduling(request: Request, response: Response) {
+        const examesRepository = getCustomRepository(ExamesRepository);
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
         const agendamentosRepository = getCustomRepository(AgendamentosRepository);
 
         const IDRequest = request.params.id;
 
-        const result = await vagaExamesRepository.findOne(IDRequest);
+        const vaga = await vagaExamesRepository.findOne(IDRequest);
 
-        if (!result) {
+        if (!vaga) {
             return response.status(404).json({
                 error: "Vaga not found!",
             })
         }
 
+        const exame = await examesRepository.findOne(vaga.exame_id);
+
+        if (!exame) {
+            return response.status(404).json({
+                error: "Exame not found!",
+            })
+        }
+
         const schedules = await agendamentosRepository.find({
+            select: ['id', 'vaga_id', 'paciente'],
             where: {
                 type: "exame",
                 vaga_id: IDRequest,
-            }
+            },
+            relations: ["paciente"],
         })
 
-        return response.status(200).json(schedules);
+        return response.status(200).json({
+            nomeExame: exame.nome,
+            dataExame: vaga.dataExame,
+            pacientesAgendados: schedules,
+        });
     }
 }
 
