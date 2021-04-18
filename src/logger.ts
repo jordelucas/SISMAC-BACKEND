@@ -1,5 +1,4 @@
 import pino from 'pino';
-import PinoPretty = require('pino-pretty');
 
 export default pino({
   enabled: true,
@@ -9,4 +8,3 @@ export default pino({
     colorize: true
   }
 })
-
