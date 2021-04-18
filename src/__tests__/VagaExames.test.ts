@@ -4,6 +4,8 @@ import { app } from '../app';
 import { v4 as uuid } from "uuid";
 import FormatDate from '../utils/FormatDate';
 import createConnection from '../database';
+import { AgendamentoController } from '../controllers/AgendamentoController';
+const agendamentoController = new AgendamentoController();
 let connection: Connection;
 
 describe("vagasExames", () => {
@@ -205,11 +207,10 @@ describe("vagasExames", () => {
         var date_string = FormatDate.format(date);
 
         const response = await request(app).post("/vagasExames").send({
-            nomeEspecialista: "",
-            dataConsulta: date_string,
+            dataExame: date_string,
             quantidade: 5,
             local: "Cang",
-            consulta_id: exame.body.id
+            exame_id: exame.body.id
         });
 
         expect(response.status).toBe(400);
@@ -223,11 +224,10 @@ describe("vagasExames", () => {
         var date_string = "2021/05/35";
 
         const response = await request(app).post("/vagasExames").send({
-            nomeEspecialista: "",
-            dataConsulta: date_string,
+            dataExame: date_string,
             quantidade: 5,
             local: "Cang",
-            consulta_id: exame.body.id
+            exame_id: exame.body.id
         });
 
         expect(response.status).toBe(400);
@@ -277,4 +277,68 @@ describe("vagasExames", () => {
     })
 
     //TODO teste de GET de agendamentos para uma vaga
+    it("should be able to return all schedules made for Exames", async () => {
+        const paciente1 = await request(app).post("/pacientes").send({
+            cpf: "456",
+            nsus: "4567",
+            nome: "kety",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998/10/30",
+            telefone: "8489498494"
+        });
+
+        const paciente2 = await request(app).post("/pacientes").send({
+            cpf: "4567",
+            nsus: "45678",
+            nome: "clev",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998/10/30",
+            telefone: "8489498494"
+        });
+
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true
+        });
+
+        console.log(exame.body);
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const vagaExame = await request(app).post("/vagasExames").send({
+            dataExame: date_string,
+            quantidade: 5,
+            local: "Cang",
+            exame_id: exame.body.id
+        });
+        console.log(vagaExame.body.id)
+
+        await request(app).post("/filaExames").send({
+            paciente_id: paciente1.body.id,
+            exame_id: exame.body.id
+        })
+
+        await request(app).post("/filaExames").send({
+            paciente_id: paciente2.body.id,
+            exame_id: exame.body.id
+        })
+
+        await agendamentoController.toSchedule();
+
+        const response = await request(app).get("/vagasExames/" + vagaExame.body.id + "/agendamentos");
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(2);
+
+        const vagasResponse = await request(app).get("/vagasExames/" + vagaExame.body.id);
+        expect(vagasResponse.body.disponivel).toBe(3);
+    })
 })
