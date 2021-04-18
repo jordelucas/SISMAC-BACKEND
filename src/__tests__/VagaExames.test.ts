@@ -307,8 +307,6 @@ describe("vagasExames", () => {
             autorizacao: true
         });
 
-        console.log(exame.body);
-
         var date = new Date();
         date.setDate(date.getDate() + 1);
         var date_string = FormatDate.format(date);
@@ -319,7 +317,6 @@ describe("vagasExames", () => {
             local: "Cang",
             exame_id: exame.body.id
         });
-        console.log(vagaExame.body.id)
 
         await request(app).post("/filaExames").send({
             paciente_id: paciente1.body.id,

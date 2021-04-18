@@ -5,6 +5,7 @@ module.exports = [
         "url": process.env.DATABASE_URL,
         "synchronize": false,
         "logging": true,
+        "logger": "file",
         "migrations": [
             process.env.MIGRATIONS_PATH
         ],

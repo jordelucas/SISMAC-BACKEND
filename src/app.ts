@@ -5,6 +5,8 @@ import { router } from './routes';
 import cors from 'cors';
 import { Client } from 'pg';
 import cron from 'node-cron';
+import logger from './logger';
+
 import { AgendamentoController } from './controllers/AgendamentoController';
 
 const agendamentoController = new AgendamentoController;
@@ -19,7 +21,7 @@ if (process.env.LOCAL_ENV == "production") {
             rejectUnauthorized: false
         }
     });
-    
+
     client.connect();
 }
 
