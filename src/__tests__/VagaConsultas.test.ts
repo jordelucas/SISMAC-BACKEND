@@ -4,6 +4,8 @@ import { app } from '../app';
 import { v4 as uuid } from "uuid";
 import FormatDate from '../utils/FormatDate';
 import createConnection from '../database';
+import { AgendamentoController } from '../controllers/AgendamentoController';
+const agendamentoController = new AgendamentoController();
 let connection: Connection;
 
 describe("vagasConsultas", () => {
@@ -263,4 +265,69 @@ describe("vagasConsultas", () => {
     })
 
     //TODO teste de GET de agendamentos para uma vaga
+    it("should be able to return all schedules made for Consultas", async () => {
+        const paciente1 = await request(app).post("/pacientes").send({
+            cpf: "456",
+            nsus: "4567",
+            nome: "kety",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998/10/30",
+            telefone: "8489498494"
+        });
+        console.log(paciente1.body.id)
+
+        const paciente2 = await request(app).post("/pacientes").send({
+            cpf: "4567",
+            nsus: "45678",
+            nome: "clev",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998/10/30",
+            telefone: "8489498494"
+        });
+        console.log(paciente2.body.id)
+
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        });
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const vagaConsulta = await request(app).post("/vagasConsultas").send({
+            nomeEspecialista: "jose",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: consulta.body.id
+        });
+        console.log(vagaConsulta.body.id)
+
+        await request(app).post("/filaConsultas").send({
+            paciente_id: paciente1.body.id,
+            consulta_id: consulta.body.id
+        })
+
+        await request(app).post("/filaConsultas").send({
+            paciente_id: paciente2.body.id,
+            consulta_id: consulta.body.id
+        })
+
+        agendamentoController.toSchedule();
+
+        const response = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id + "/agendamentos");
+
+        expect(response.status).toBe(200);
+        console.log(response.body);
+        expect(response.body.length).toBe(2);
+        expect(vagaConsulta.body.disponivel).toBe(3);
+
+        // const vagasResponse = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id);
+    })
 })

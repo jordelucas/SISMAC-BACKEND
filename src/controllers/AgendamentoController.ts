@@ -7,9 +7,9 @@ import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository
 import { VagaExamesRepository } from "../repositories/VagaExamesRepository";
 
 class AgendamentoController {
-  async toSchedule() {    
+  async toSchedule() {
     const agendamentoRepository = getCustomRepository(AgendamentosRepository)
-    
+
     /* - - - - -  Agendamento de exames - - - - - */
     const vagaExamesRepository = getCustomRepository(VagaExamesRepository)
     const filaExamesRepository = getCustomRepository(FilaExamesRepository)
@@ -42,13 +42,13 @@ class AgendamentoController {
         } else {
           break;
         }
-      } while(qtd_vacancies > 0);
+      } while (qtd_vacancies > 0);
     })
 
     /* - - - - -  Agendamento de consultas - - - - - */
     const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository)
     const filaConsultasRepository = getCustomRepository(FilaConsultasRepository)
-    
+
     const consultationWithVacancies = await vagaConsultasRepository.find({
       disponivel: MoreThan(0),
     });
@@ -77,7 +77,7 @@ class AgendamentoController {
         } else {
           break;
         }
-      } while(qtd_vacancies > 0);
+      } while (qtd_vacancies > 0);
     })
   }
 }
