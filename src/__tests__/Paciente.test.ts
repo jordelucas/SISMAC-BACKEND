@@ -261,7 +261,7 @@ describe("pacientes", () => {
         expect(response.status).toBe(400);
     })
 
-    it("should not create a Consulta if your name has already been used with an insensitive case ", async () => {
+    it("should not update a Paciente if the new CPF or NSUS are from another Paciente", async () => {
         const paciente = await request(app).post("/pacientes").send({
             cpf: "68478",
             nsus: "68478789",

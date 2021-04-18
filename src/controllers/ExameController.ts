@@ -103,7 +103,7 @@ class ExameController {
             }
         );
 
-        if (nameResponse.length != 0) {
+        if (request.body.nome != result.nome && nameResponse.length != 0) {
             return response.status(400).json({
                 error: "Consulta already exists with this name!",
             })
