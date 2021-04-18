@@ -161,8 +161,8 @@ class VagaExamesController {
         })
 
         return response.status(200).json({
-            nomeExame: exame.nome,
-            dataExame: vaga.dataExame,
+            nome: exame.nome,
+            data: vaga.dataExame,
             pacientesAgendados: schedules,
         });
     }
