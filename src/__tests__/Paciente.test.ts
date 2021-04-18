@@ -273,7 +273,6 @@ describe("pacientes", () => {
             dtNascimento: "1998/10/25",
             telefone: "8494984499"
         });
-        console.log(paciente.status)
 
         const id = paciente.body.id;
         const response = await request(app).put("/pacientes/" + id).send({
