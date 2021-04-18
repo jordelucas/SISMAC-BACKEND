@@ -47,9 +47,8 @@ class AgendamentoController {
         } else {
           break;
         }
-      } while (qtd_vacancies > 0);
+      } while(qtd_vacancies > 0);
     }
-
 
     /* - - - - -  Agendamento de consultas - - - - - */
     const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository)
@@ -88,7 +87,7 @@ class AgendamentoController {
         } else {
           break;
         }
-      } while (qtd_vacancies > 0);
+      } while(qtd_vacancies > 0);
     }
   }
 }

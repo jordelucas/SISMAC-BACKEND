@@ -109,27 +109,42 @@ class VagaConsultasController {
     }
 
     async showScheduling(request: Request, response: Response) {
+        const consultasRepository = getCustomRepository(ConsultasRepository);
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
         const agendamentosRepository = getCustomRepository(AgendamentosRepository);
 
         const IDRequest = request.params.id;
 
-        const result = await vagaConsultasRepository.findOne(IDRequest);
+        const vaga = await vagaConsultasRepository.findOne(IDRequest);
 
-        if (!result) {
+        if (!vaga) {
             return response.status(404).json({
                 error: "Vaga not found!",
             })
         }
 
+        const consulta = await consultasRepository.findOne(vaga.consulta_id);
+
+        if (!consulta) {
+            return response.status(404).json({
+                error: "Consulta not found!",
+            })
+        }
+
         const schedules = await agendamentosRepository.find({
+            select: ['id', 'vaga_id', 'paciente'],
             where: {
                 type: "consulta",
                 vaga_id: IDRequest,
-            }
+            },
+            relations: ["paciente"],
         })
 
-        return response.status(200).json(schedules);
+        return response.status(200).json({
+            nome: consulta.nome,
+            data: vaga.dataConsulta,
+            pacientesAgendados: schedules,
+        });
     }
 }
 

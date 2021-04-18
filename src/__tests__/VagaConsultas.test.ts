@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { Connection, getConnection } from 'typeorm';
+import { Connection } from 'typeorm';
 import { app } from '../app';
 import { v4 as uuid } from "uuid";
 import FormatDate from '../utils/FormatDate';
@@ -319,7 +319,7 @@ describe("vagasConsultas", () => {
         const response = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id + "/agendamentos");
 
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(2);
+        expect(response.body.pacientesAgendados.length).toBe(2);
 
         const vagasResponse = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id);
         expect(vagasResponse.body.disponivel).toBe(3);

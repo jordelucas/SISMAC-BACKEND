@@ -333,7 +333,7 @@ describe("vagasExames", () => {
         const response = await request(app).get("/vagasExames/" + vagaExame.body.id + "/agendamentos");
 
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(2);
+        expect(response.body.pacientesAgendados.length).toBe(2);
 
         const vagasResponse = await request(app).get("/vagasExames/" + vagaExame.body.id);
         expect(vagasResponse.body.disponivel).toBe(3);
