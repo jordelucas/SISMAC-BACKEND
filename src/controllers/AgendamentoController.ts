@@ -15,10 +15,15 @@ class AgendamentoController {
     const filaExamesRepository = getCustomRepository(FilaExamesRepository)
 
     const examsWithVacancies = await vagaExamesRepository.find({
-      disponivel: MoreThan(0),
+      where: {
+        disponivel: MoreThan(0)
+      },
+      order: {
+        dataExame: "ASC"
+      }
     });
 
-    examsWithVacancies.map(async (vacancy) => {
+    for (const vacancy of examsWithVacancies) {
       let qtd_vacancies = vacancy.disponivel;
 
       const requests = await filaExamesRepository.find({
@@ -42,18 +47,23 @@ class AgendamentoController {
         } else {
           break;
         }
-      } while (qtd_vacancies > 0);
-    })
+      } while(qtd_vacancies > 0);
+    }
 
     /* - - - - -  Agendamento de consultas - - - - - */
     const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository)
     const filaConsultasRepository = getCustomRepository(FilaConsultasRepository)
 
     const consultationWithVacancies = await vagaConsultasRepository.find({
-      disponivel: MoreThan(0),
+      where: {
+        disponivel: MoreThan(0)
+      },
+      order: {
+        dataConsulta: "ASC"
+      }
     });
 
-    consultationWithVacancies.map(async (vacancy) => {
+    for (const vacancy of consultationWithVacancies) {
       let qtd_vacancies = vacancy.disponivel;
 
       const requests = await filaConsultasRepository.find({
@@ -77,8 +87,8 @@ class AgendamentoController {
         } else {
           break;
         }
-      } while (qtd_vacancies > 0);
-    })
+      } while(qtd_vacancies > 0);
+    }
   }
 }
 
