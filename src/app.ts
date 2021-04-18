@@ -5,7 +5,7 @@ import { router } from './routes';
 import cors from 'cors';
 import { Client } from 'pg';
 import cron from 'node-cron';
-import logger from './logger';
+import { apiErrorHandler } from './error/api-error-handler';
 
 import { AgendamentoController } from './controllers/AgendamentoController';
 
@@ -28,6 +28,7 @@ if (process.env.LOCAL_ENV == "production") {
 app.use(cors())
 app.use(express.json());
 app.use(router);
+app.use(apiErrorHandler);
 
 cron.schedule('* * * * *', agendamentoController.toSchedule);
 

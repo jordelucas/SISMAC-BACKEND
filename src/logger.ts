@@ -6,5 +6,5 @@ export default pino({
   prettyPrint: {
     levelFirst: true,
     colorize: true
-  }
-})
+  },
+}, pino.destination("pino-logger.log"))
