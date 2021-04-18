@@ -22,8 +22,13 @@ class ConsultaController {
 
         const result = await consultasRepository.findOne({ nome })
 
-        //TODO Verificação com case insenstive
-        if (result) {
+        const nameResponse = await consultasRepository.find(
+            {
+                where: `"nome" ILIKE '${request.body.nome}'`
+            }
+        );
+
+        if (result || nameResponse.length != 0) {
             return response.status(400).json({
                 error: "Consulta already exists!",
             })

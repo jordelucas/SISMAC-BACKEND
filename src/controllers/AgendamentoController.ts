@@ -7,9 +7,9 @@ import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository
 import { VagaExamesRepository } from "../repositories/VagaExamesRepository";
 
 class AgendamentoController {
-  async toSchedule() {    
+  async toSchedule() {
     const agendamentoRepository = getCustomRepository(AgendamentosRepository)
-    
+
     /* - - - - -  Agendamento de exames - - - - - */
     const vagaExamesRepository = getCustomRepository(VagaExamesRepository)
     const filaExamesRepository = getCustomRepository(FilaExamesRepository)
@@ -53,7 +53,7 @@ class AgendamentoController {
     /* - - - - -  Agendamento de consultas - - - - - */
     const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository)
     const filaConsultasRepository = getCustomRepository(FilaConsultasRepository)
-    
+
     const consultationWithVacancies = await vagaConsultasRepository.find({
       where: {
         disponivel: MoreThan(0)

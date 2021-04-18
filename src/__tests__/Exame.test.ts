@@ -125,4 +125,16 @@ describe("exames", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("should not create a Exame if your name has already been used with an insensitive case ", async () => {
+        await request(app).post("/exames").send({
+            nome: "teste7"
+        });
+
+        const response = await request(app).post("/exames").send({
+            nome: "Teste7"
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
