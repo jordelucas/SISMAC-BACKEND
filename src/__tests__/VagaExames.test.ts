@@ -307,8 +307,6 @@ describe("vagasExames", () => {
             autorizacao: true
         });
 
-        console.log(exame.body);
-
         var date = new Date();
         date.setDate(date.getDate() + 1);
         var date_string = FormatDate.format(date);
@@ -319,7 +317,6 @@ describe("vagasExames", () => {
             local: "Cang",
             exame_id: exame.body.id
         });
-        console.log(vagaExame.body.id)
 
         await request(app).post("/filaExames").send({
             paciente_id: paciente1.body.id,
@@ -336,7 +333,7 @@ describe("vagasExames", () => {
         const response = await request(app).get("/vagasExames/" + vagaExame.body.id + "/agendamentos");
 
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(2);
+        expect(response.body.pacientesAgendados.length).toBe(2);
 
         const vagasResponse = await request(app).get("/vagasExames/" + vagaExame.body.id);
         expect(vagasResponse.body.disponivel).toBe(3);
