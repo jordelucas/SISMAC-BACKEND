@@ -221,8 +221,7 @@ describe("vagasConsultas", () => {
 
     it("Should be able to find vacancies by consulta ID", async () => {
         const consulta = await request(app).post("/consultas").send({
-            nome: "teste",
-            autorizacao: true,
+            nome: "teste"
         })
 
         const consulta_id = consulta.body.id;
@@ -264,7 +263,6 @@ describe("vagasConsultas", () => {
         expect(response.status).toBe(404);
     })
 
-    //TODO teste de GET de agendamentos para uma vaga
     it("should be able to return all schedules made for Consultas", async () => {
         const paciente1 = await request(app).post("/pacientes").send({
             cpf: "456",
@@ -277,7 +275,6 @@ describe("vagasConsultas", () => {
             dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
-        console.log(paciente1.body.id)
 
         const paciente2 = await request(app).post("/pacientes").send({
             cpf: "4567",
@@ -290,7 +287,6 @@ describe("vagasConsultas", () => {
             dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
-        console.log(paciente2.body.id)
 
         const consulta = await request(app).post("/consultas").send({
             nome: "teste"
@@ -307,7 +303,6 @@ describe("vagasConsultas", () => {
             local: "Cang",
             consulta_id: consulta.body.id
         });
-        console.log(vagaConsulta.body.id)
 
         await request(app).post("/filaConsultas").send({
             paciente_id: paciente1.body.id,
@@ -319,15 +314,14 @@ describe("vagasConsultas", () => {
             consulta_id: consulta.body.id
         })
 
-        agendamentoController.toSchedule();
+        await agendamentoController.toSchedule();
 
         const response = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id + "/agendamentos");
 
         expect(response.status).toBe(200);
-        console.log(response.body);
         expect(response.body.length).toBe(2);
-        expect(vagaConsulta.body.disponivel).toBe(3);
 
-        // const vagasResponse = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id);
+        const vagasResponse = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id);
+        expect(vagasResponse.body.disponivel).toBe(3);
     })
 })
