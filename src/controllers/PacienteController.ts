@@ -148,7 +148,30 @@ class PacienteController {
                 error: "Paciente not found!",
             })
         }
-        //TODO verificação de alteração para CPF já existente
+
+        const cpfResponse = await pacientesRepository.find(
+            {
+                where: { cpf: request.body.cpf }
+            }
+        );
+
+        const nsusResponse = await pacientesRepository.find(
+            {
+                where: { nsus: request.body.nsus }
+            }
+        );
+
+        if (request.body.cpf != result.cpf && cpfResponse.length != 0) {
+            return response.status(400).json({
+                error: "This CPF already Exists!",
+            })
+        }
+
+        if (request.body.nsus != result.nsus && nsusResponse.length != 0) {
+            return response.status(400).json({
+                error: "This NSUS already Exists!",
+            })
+        }
         await pacientesRepository.update(IDRequest, request.body);
 
         return response.status(200).json(request.body);

@@ -260,4 +260,45 @@ describe("pacientes", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("should not update a Paciente if the new CPF or NSUS are from another Paciente", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "68478",
+            nsus: "68478789",
+            nome: "Clev",
+            cidade: "Cang",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/25",
+            telefone: "8494984499"
+        });
+
+        const id = paciente.body.id;
+        const response = await request(app).put("/pacientes/" + id).send({
+            cpf: "12312347",
+            nsus: "68478789",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/26",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+
+        const response2 = await request(app).put("/pacientes/" + id).send({
+            cpf: "68478",
+            nsus: "22222227",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/27",
+            telefone: "8494984499"
+        });
+
+        expect(response2.status).toBe(400);
+    })
 });
