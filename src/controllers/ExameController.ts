@@ -27,10 +27,15 @@ class ExameController {
 
         const examesRepository = getCustomRepository(ExamesRepository);
 
-        //TODO Verificação com case insenstive
         const result = await examesRepository.findOne({ nome })
 
-        if (result) {
+        const nameResponse = await examesRepository.find(
+            {
+                where: `"nome" ILIKE '${request.body.nome}'`
+            }
+        );
+
+        if (result || nameResponse.length != 0) {
             return response.status(400).json({
                 error: "Exame already exists!",
             })
