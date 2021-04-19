@@ -316,4 +316,31 @@ describe("pacientes", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("should not update a Paciente if it dont has suficient columns", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "684781231",
+            nsus: "684787892321",
+            nome: "Clev",
+            cidade: "Cang",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/25",
+            telefone: "8494984499"
+        });
+
+        const id = paciente.body.id;
+        const response = await request(app).put("/pacientes/" + id).send({
+            cpf: "684781231",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/26",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+    })
 });

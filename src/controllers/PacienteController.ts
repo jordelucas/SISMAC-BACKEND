@@ -139,6 +139,13 @@ class PacienteController {
     }
 
     async update(request: Request, response: Response, next: NextFunction) {
+        const resquestSize = Object.keys(request.body).length;
+
+        if (CheckEmptyFields.check(request) || resquestSize < 9) {
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
         const pacientesRepository = getCustomRepository(PacientesRepository);
         //TODO verificação se request tem menos valores que o esperado
         const IDRequest = request.params.id;
