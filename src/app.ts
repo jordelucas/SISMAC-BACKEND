@@ -5,6 +5,8 @@ import { router } from './routes';
 import cors from 'cors';
 import { Client } from 'pg';
 import cron from 'node-cron';
+import { apiErrorHandler } from './error/api-error-handler';
+
 import { AgendamentoController } from './controllers/AgendamentoController';
 
 const agendamentoController = new AgendamentoController;
@@ -19,14 +21,15 @@ if (process.env.LOCAL_ENV == "production") {
             rejectUnauthorized: false
         }
     });
-    
+
     client.connect();
 }
 
 app.use(cors())
 app.use(express.json());
 app.use(router);
+app.use(apiErrorHandler);
 
-cron.schedule('* * * * *', agendamentoController.toSchedule);
+cron.schedule(process.env.JOB_TIME || '* * * * *', agendamentoController.toSchedule);
 
 export { app }

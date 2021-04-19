@@ -1,19 +1,25 @@
 import { getCustomRepository } from 'typeorm';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { FilaExamesRepository } from "../repositories/FilaExamesRepository"
 import { PacientesRepository } from '../repositories/PacientesRepository';
 import { ExamesRepository } from '../repositories/ExamesRepository';
 
 import CheckEmptyFields from '../utils/CheckEmptyFields';
+import { ApiError } from '../error/ApiError';
+import CheckNullColumns from '../utils/CheckNullColumn';
 class FilaExamesController {
-    async create(request: Request, response: Response) {
+    async create(request: Request, response: Response, next: NextFunction) {
 
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 2) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
+            return;
         }
 
         const {
@@ -30,15 +36,13 @@ class FilaExamesController {
         const exameResult = await exameRepository.findOne(exame_id);
 
         if (!pacienteResult) {
-            return response.status(404).json({
-                error: "Paciente not found!",
-            })
+            next(ApiError.notFound("Paciente not found!"));
+            return;
         }
 
         if (!exameResult) {
-            return response.status(404).json({
-                error: "Exame not found!",
-            })
+            next(ApiError.notFound("Exame not found!"));
+            return;
         }
 
         const result = await filaExamesRepository.find({
@@ -51,9 +55,8 @@ class FilaExamesController {
         })
 
         if (result.length != 0) {
-            return response.status(400).json({
-                error: "Member for Fila already exists!",
-            })
+            next(ApiError.badRequest("Member for Fila already exists!"));
+            return;
         }
 
         const member = filaExamesRepository.create({

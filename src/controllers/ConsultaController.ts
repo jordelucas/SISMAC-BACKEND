@@ -1,19 +1,23 @@
 import { getCustomRepository } from 'typeorm';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ConsultasRepository } from '../repositories/ConsultasRepository';
 import { VagaConsultasRepository } from '../repositories/VagaConsultasRepository';
 
 import CheckEmptyFields from '../utils/CheckEmptyFields';
-
+import { ApiError } from '../error/ApiError';
+import CheckNullColumns from '../utils/CheckNullColumn';
 class ConsultaController {
-    async create(request: Request, response: Response) {
-
+    async create(request: Request, response: Response, next: NextFunction) {
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 1) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
+            return;
         }
 
         const { nome } = request.body;
@@ -50,7 +54,7 @@ class ConsultaController {
         return response.status(200).json(all);
     }
 
-    async showByID(request: Request, response: Response) {
+    async showByID(request: Request, response: Response, next: NextFunction) {
         const consultasRepository = getCustomRepository(ConsultasRepository);
 
         const IDRequest = request.params.id;
@@ -58,15 +62,14 @@ class ConsultaController {
         const result = await consultasRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         return response.status(200).json(result);
     }
 
-    async showVagasByConsultaID(request: Request, response: Response) {
+    async showVagasByConsultaID(request: Request, response: Response, next: NextFunction) {
         const consultasRepository = getCustomRepository(ConsultasRepository);
 
         const IDConsultaRequest = request.params.id;
@@ -74,9 +77,8 @@ class ConsultaController {
         const filteredConsulta = await consultasRepository.findOne(IDConsultaRequest);
 
         if (!filteredConsulta) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
@@ -88,13 +90,12 @@ class ConsultaController {
         return response.status(200).json(filteredVagasConsulta);
     }
 
-    async update(request: Request, response: Response) {
+    async update(request: Request, response: Response, next: NextFunction) {
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 1) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
         }
 
         const consultasRepository = getCustomRepository(ConsultasRepository);
@@ -104,9 +105,8 @@ class ConsultaController {
         const result = await consultasRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         const nameResponse = await consultasRepository.find(
@@ -116,9 +116,8 @@ class ConsultaController {
         );
 
         if (nameResponse.length != 0) {
-            return response.status(400).json({
-                error: "Consulta already exists with this name!",
-            })
+            next(ApiError.badRequest("Consulta already exists with this name!"));
+            return;
         }
 
         await consultasRepository.update(IDRequest, request.body);

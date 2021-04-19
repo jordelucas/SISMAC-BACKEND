@@ -1,28 +1,34 @@
 import { getCustomRepository } from 'typeorm';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { VagaConsultasRepository } from "../repositories/VagaConsultasRepository";
 import { ConsultasRepository } from '../repositories/ConsultasRepository';
 
 import ValidDate from '../utils/ValidDate';
 import CheckEmptyFields from '../utils/CheckEmptyFields';
 import { AgendamentosRepository } from '../repositories/AgendamentoRepository';
+import { ApiError } from '../error/ApiError';
+import CheckNullColumns from '../utils/CheckNullColumn';
 
 class VagaConsultasController {
-    async create(request: Request, response: Response) {
+    async create(request: Request, response: Response, next: NextFunction) {
 
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 5) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
+            return;
         }
 
         if (!ValidDate.isValidDate(request.body.dataConsulta)) {
-            return response.status(400).json({
-                error: "Data out of range!",
-            })
+            next(ApiError.badRequest("Data out of range!"));
+            return;
         }
+
 
         const {
             nomeEspecialista,
@@ -40,9 +46,8 @@ class VagaConsultasController {
         const consultaResult = await consultaRepository.findOne(consulta_id);
 
         if (!consultaResult) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         const result = await vagaConsultasRepository.find({
@@ -55,18 +60,16 @@ class VagaConsultasController {
         })
 
         if (result.length != 0) {
-            return response.status(400).json({
-                error: "Vaga for Consulta already exists!",
-            })
+            next(ApiError.badRequest("Vaga for Consulta already exists!"));
+            return;
         }
 
         var today = new Date();
         var dateDataConsulta = new Date(dataConsulta);
 
         if (dateDataConsulta <= today) {
-            return response.status(400).json({
-                error: "dataConsulta is older then actual data!",
-            })
+            next(ApiError.badRequest("dataConsulta is older then actual data!"));
+            return;
         }
 
         const vagaConsulta = vagaConsultasRepository.create({
@@ -92,7 +95,7 @@ class VagaConsultasController {
         return response.status(200).json(all);
     }
 
-    async showByID(request: Request, response: Response) {
+    async showByID(request: Request, response: Response, next: NextFunction) {
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
 
         const IDRequest = request.params.id;
@@ -100,15 +103,14 @@ class VagaConsultasController {
         const result = await vagaConsultasRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Vaga not found!",
-            })
+            next(ApiError.notFound("Vaga not found!"));
+            return;
         }
 
         return response.status(200).json(result);
     }
 
-    async showScheduling(request: Request, response: Response) {
+    async showScheduling(request: Request, response: Response, next: NextFunction) {
         const consultasRepository = getCustomRepository(ConsultasRepository);
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
         const agendamentosRepository = getCustomRepository(AgendamentosRepository);
@@ -118,17 +120,15 @@ class VagaConsultasController {
         const vaga = await vagaConsultasRepository.findOne(IDRequest);
 
         if (!vaga) {
-            return response.status(404).json({
-                error: "Vaga not found!",
-            })
+            next(ApiError.notFound("Vaga not found!"));
+            return;
         }
 
         const consulta = await consultasRepository.findOne(vaga.consulta_id);
 
         if (!consulta) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         const schedules = await agendamentosRepository.find({

@@ -111,4 +111,12 @@ describe("consultas", () => {
 
         expect(response.status).toBe(400);
     })
+
+    it("should not create a Consulta if the column name is empty", async () => {
+        const response = await request(app).post("/consultas").send({
+            "": "teste"
+        });
+
+        expect(response.status).toBe(400);
+    })
 })
