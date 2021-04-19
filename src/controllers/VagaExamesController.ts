@@ -1,36 +1,34 @@
 import { getCustomRepository } from 'typeorm';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { VagaExamesRepository } from '../repositories/VagaExamesRepository';
 import { ExamesRepository } from '../repositories/ExamesRepository';
 
 import ValidDate from '../utils/ValidDate';
 import CheckEmptyFields from '../utils/CheckEmptyFields';
 import { AgendamentosRepository } from '../repositories/AgendamentoRepository';
+import { ApiError } from '../error/ApiError';
 
 class VagaExamesController {
-    async create(request: Request, response: Response) {
+    async create(request: Request, response: Response, next: NextFunction) {
 
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 4) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
         }
 
         if (!ValidDate.isValidDate(request.body.dataExame)) {
-            return response.status(400).json({
-                error: "Data out of range!",
-            })
+            next(ApiError.badRequest("Data out of range!"));
+            return;
         }
 
         var today = new Date();
         var dateDataExame = new Date(request.body.dataExame);
 
         if (dateDataExame <= today) {
-            return response.status(400).json({
-                error: "dataExame is older then actual data!",
-            })
+            next(ApiError.badRequest("dataExame is older then actual data!"));
+            return;
         }
 
         const {
@@ -48,9 +46,8 @@ class VagaExamesController {
         const exameResult = await exameRepository.findOne(exame_id);
 
         if (!exameResult) {
-            return response.status(404).json({
-                error: "Exame not found!",
-            })
+            next(ApiError.notFound("Exame not found!"));
+            return;
         }
 
         const result = await vagaExamesRepository.find({
@@ -63,9 +60,8 @@ class VagaExamesController {
         })
 
         if (result.length != 0) {
-            return response.status(400).json({
-                error: "Vaga for Exame already exists!",
-            })
+            next(ApiError.badRequest("Vaga for Exame already exists!"));
+            return;
         }
 
         const vagaExame = vagaExamesRepository.create({
@@ -79,7 +75,6 @@ class VagaExamesController {
         await vagaExamesRepository.save(vagaExame);
 
         return response.status(201).json(vagaExame);
-
     }
 
     async show(request: Request, response: Response) {
@@ -90,7 +85,7 @@ class VagaExamesController {
         return response.status(200).json(all);
     }
 
-    async showByID(request: Request, response: Response) {
+    async showByID(request: Request, response: Response, next: NextFunction) {
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
 
         const IDRequest = request.params.id;
@@ -98,15 +93,14 @@ class VagaExamesController {
         const result = await vagaExamesRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Vaga not found!",
-            })
+            next(ApiError.notFound("Vaga not found!"));
+            return;
         }
 
         return response.status(200).json(result);
     }
 
-    async showVagasByExameID(request: Request, response: Response) {
+    async showVagasByExameID(request: Request, response: Response, next: NextFunction) {
         const examesRepository = getCustomRepository(ExamesRepository);
 
         const IDExameRequest = request.params.id;
@@ -114,9 +108,8 @@ class VagaExamesController {
         const filteredExame = await examesRepository.findOne(IDExameRequest);
 
         if (!filteredExame) {
-            return response.status(404).json({
-                error: "Exame not found!",
-            })
+            next(ApiError.notFound("Exame not found!"));
+            return;
         }
 
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
@@ -128,7 +121,7 @@ class VagaExamesController {
         return response.status(200).json(filteredVagasExame);
     }
 
-    async showScheduling(request: Request, response: Response) {
+    async showScheduling(request: Request, response: Response, next: NextFunction) {
         const examesRepository = getCustomRepository(ExamesRepository);
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
         const agendamentosRepository = getCustomRepository(AgendamentosRepository);
@@ -138,17 +131,15 @@ class VagaExamesController {
         const vaga = await vagaExamesRepository.findOne(IDRequest);
 
         if (!vaga) {
-            return response.status(404).json({
-                error: "Vaga not found!",
-            })
+            next(ApiError.notFound("Vaga not found!"));
+            return;
         }
 
         const exame = await examesRepository.findOne(vaga.exame_id);
 
         if (!exame) {
-            return response.status(404).json({
-                error: "Exame not found!",
-            })
+            next(ApiError.notFound("Exame not found!"));
+            return;
         }
 
         const schedules = await agendamentosRepository.find({
