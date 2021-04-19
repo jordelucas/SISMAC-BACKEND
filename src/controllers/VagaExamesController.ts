@@ -87,17 +87,25 @@ class VagaExamesController {
 
     async showByID(request: Request, response: Response, next: NextFunction) {
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
+        const exameRepository = getCustomRepository(ExamesRepository);
 
         const IDRequest = request.params.id;
 
-        const result = await vagaExamesRepository.findOne(IDRequest);
+        const vaga = await vagaExamesRepository.findOne(IDRequest);
 
-        if (!result) {
+        if (!vaga) {
             next(ApiError.notFound("Vaga not found!"));
             return;
         }
 
-        return response.status(200).json(result);
+        const exame = await exameRepository.findOne(vaga.exame_id);
+
+        if (!exame) {
+            next(ApiError.notFound("Exame not found!"));
+            return;
+        }
+
+        return response.status(200).json({...vaga, nomeExame: exame.nome});
     }
 
     async showVagasByExameID(request: Request, response: Response, next: NextFunction) {
