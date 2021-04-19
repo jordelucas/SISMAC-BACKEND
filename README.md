@@ -61,9 +61,11 @@ Funcionário:
 
 **[PUT]**     `/pacientes/:id` 
 
-**[DELETE]**     `/pacientes/:id`
+**[DELETE]**  `/pacientes/:id`
 
-**[POST]**     `/exames` 
+**[GET]**     `/pacientes/:id/agendamentos`
+
+**[POST]**    `/exames` 
 
 **[GET]**     `/exames` 
 
