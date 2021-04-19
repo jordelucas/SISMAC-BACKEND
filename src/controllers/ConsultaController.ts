@@ -84,7 +84,12 @@ class ConsultaController {
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
 
         const filteredVagasConsulta = await vagaConsultasRepository.find({
-            consulta_id: IDConsultaRequest
+            where: {
+                consulta_id: IDConsultaRequest
+            },
+            order: {
+                dataConsulta: "ASC"
+            }
         })
 
         return response.status(200).json(filteredVagasConsulta);
