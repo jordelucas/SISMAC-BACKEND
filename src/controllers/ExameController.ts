@@ -1,23 +1,22 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
+import { ApiError } from "../error/ApiError";
 import { ExamesRepository } from "../repositories/ExamesRepository";
 
 import CheckEmptyFields from "../utils/CheckEmptyFields";
 class ExameController {
-    async create(request: Request, response: Response) {
+    async create(request: Request, response: Response, next: NextFunction) {
 
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 2) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
         }
 
         if (typeof request.body.autorizacao != "boolean") {
-            return response.status(400).json({
-                error: "must be a boolean value!",
-            })
+            next(ApiError.badRequest("must be a boolean value!"));
+            return;
         }
 
         const {
@@ -36,9 +35,8 @@ class ExameController {
         );
 
         if (result || nameResponse.length != 0) {
-            return response.status(400).json({
-                error: "Exame already exists!",
-            })
+            next(ApiError.badRequest("Exame already exists!"));
+            return;
         }
 
         const exame = examesRepository.create({
@@ -59,7 +57,7 @@ class ExameController {
         return response.status(200).json(all);
     }
 
-    async showByID(request: Request, response: Response) {
+    async showByID(request: Request, response: Response, next: NextFunction) {
         const examesRepository = getCustomRepository(ExamesRepository);
 
         const IDRequest = request.params.id;
@@ -67,22 +65,20 @@ class ExameController {
         const result = await examesRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Exame not found!",
-            })
+            next(ApiError.notFound("Exame not found!"));
+            return;
         }
 
         return response.status(200).json(result);
     }
 
-    async update(request: Request, response: Response) {
+    async update(request: Request, response: Response, next: NextFunction) {
 
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 2) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
         }
 
         const examesRepository = getCustomRepository(ExamesRepository);
@@ -92,9 +88,8 @@ class ExameController {
         const result = await examesRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Exame not found!",
-            })
+            next(ApiError.notFound("Exame not found!"));
+            return;
         }
 
         const nameResponse = await examesRepository.find(
@@ -104,9 +99,8 @@ class ExameController {
         );
 
         if (request.body.nome != result.nome && nameResponse.length != 0) {
-            return response.status(400).json({
-                error: "Consulta already exists with this name!",
-            })
+            next(ApiError.badRequest("Exame already exists with this name!"));
+            return;
         }
 
         await examesRepository.update(IDRequest, request.body);

@@ -276,7 +276,6 @@ describe("vagasExames", () => {
         expect(response.status).toBe(404);
     })
 
-    //TODO teste de GET de agendamentos para uma vaga
     it("should be able to return all schedules made for Exames", async () => {
         const paciente1 = await request(app).post("/pacientes").send({
             cpf: "456",

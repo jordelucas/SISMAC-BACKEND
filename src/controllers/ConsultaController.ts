@@ -57,9 +57,8 @@ class ConsultaController {
         const result = await consultasRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         return response.status(200).json(result);
@@ -73,9 +72,8 @@ class ConsultaController {
         const filteredConsulta = await consultasRepository.findOne(IDConsultaRequest);
 
         if (!filteredConsulta) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         const vagaConsultasRepository = getCustomRepository(VagaConsultasRepository);
@@ -91,9 +89,8 @@ class ConsultaController {
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 1) {
-            return response.status(400).json({
-                error: "there are not enough values!",
-            })
+            next(ApiError.badRequest("there are not enough values!"));
+            return;
         }
 
         const consultasRepository = getCustomRepository(ConsultasRepository);
@@ -103,9 +100,8 @@ class ConsultaController {
         const result = await consultasRepository.findOne(IDRequest);
 
         if (!result) {
-            return response.status(404).json({
-                error: "Consulta not found!",
-            })
+            next(ApiError.notFound("Consulta not found!"));
+            return;
         }
 
         const nameResponse = await consultasRepository.find(
@@ -115,9 +111,8 @@ class ConsultaController {
         );
 
         if (nameResponse.length != 0) {
-            return response.status(400).json({
-                error: "Consulta already exists with this name!",
-            })
+            next(ApiError.badRequest("Consulta already exists with this name!"));
+            return;
         }
 
         await consultasRepository.update(IDRequest, request.body);
