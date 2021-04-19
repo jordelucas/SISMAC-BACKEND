@@ -3,4 +3,6 @@ import { app } from "./app";
 
 dotenv.config();
 
-app.listen(process.env.PORT || 8080, () => console.log("Funcionando na porta 8080"));
+if (process.env.NODE_ENV !== "test") {
+    app.listen(process.env.PORT || 8080, () => console.log("Funcionando na porta 8080"));
+}

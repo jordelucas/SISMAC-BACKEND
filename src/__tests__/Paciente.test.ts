@@ -26,7 +26,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -43,7 +43,22 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "25",
             complemento: "casa",
-            dtNascimento: "1998-10-31",
+            dtNascimento: "1998/10/31",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("Should not be able to create a new Pacient if any value is null", async () => {
+        const response = await request(app).post("/pacientes").send({
+            cpf: "123123122",
+            nsus: "111111111",
+            nome: "",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/31",
             telefone: "8494984499"
         });
 
@@ -59,7 +74,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -77,7 +92,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -101,7 +116,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -125,7 +140,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -137,7 +152,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -159,7 +174,7 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
@@ -188,10 +203,10 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
-        
+
         const id = paciente.body.id;
 
         const response = await request(app).delete("/pacientes/" + id);
@@ -212,10 +227,10 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
-      
+
         const response = await request(app).put("/pacientes/" + paciente.body.id).send({
             cpf: "12312347",
             nsus: "22222227",
@@ -224,10 +239,108 @@ describe("pacientes", () => {
             bairro: "sertãozinho",
             numero: "20",
             complemento: "casa",
-            dtNascimento: "1998-10-30",
+            dtNascimento: "1998/10/30",
             telefone: "8489498494"
         });
 
         expect(response.status).toBe(200);
+    })
+
+    it("Should return 400 if date is out of range", async () => {
+        const response = await request(app).post("/pacientes").send({
+            cpf: "12312312266",
+            nsus: "11111111166",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/50",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("should not update a Paciente if the new CPF or NSUS are from another Paciente", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "68478",
+            nsus: "68478789",
+            nome: "Clev",
+            cidade: "Cang",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/25",
+            telefone: "8494984499"
+        });
+
+        const id = paciente.body.id;
+        const response = await request(app).put("/pacientes/" + id).send({
+            cpf: "12312347",
+            nsus: "68478789",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/26",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+
+        const response2 = await request(app).put("/pacientes/" + id).send({
+            cpf: "68478",
+            nsus: "22222227",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/27",
+            telefone: "8494984499"
+        });
+
+        expect(response2.status).toBe(400);
+    })
+
+    it("should not create a Paciente if the column name is empty", async () => {
+        const response = await request(app).post("/pacientes").send({
+            "": "12312312266",
+            nsus: "11111111166",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/50",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("should not update a Paciente if it dont has suficient columns", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "684781231",
+            nsus: "684787892321",
+            nome: "Clev",
+            cidade: "Cang",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/25",
+            telefone: "8494984499"
+        });
+
+        const id = paciente.body.id;
+        const response = await request(app).put("/pacientes/" + id).send({
+            cpf: "684781231",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/26",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
     })
 });
