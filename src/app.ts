@@ -30,6 +30,6 @@ app.use(express.json());
 app.use(router);
 app.use(apiErrorHandler);
 
-cron.schedule('* * * * *', agendamentoController.toSchedule);
+cron.schedule(process.env.JOB_TIME || '* * * * *', agendamentoController.toSchedule);
 
 export { app }

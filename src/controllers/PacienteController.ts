@@ -5,6 +5,7 @@ import { AgendamentosRepository } from "../repositories/AgendamentoRepository";
 import { PacientesRepository } from "../repositories/PacientesRepository";
 
 import CheckEmptyFields from "../utils/CheckEmptyFields";
+import CheckNullColumns from "../utils/CheckNullColumn";
 import ValidDate from "../utils/ValidDate";
 class PacienteController {
     async create(request: Request, response: Response, next: NextFunction) {
@@ -18,6 +19,11 @@ class PacienteController {
 
         if (!ValidDate.isValidDate(request.body.dtNascimento)) {
             next(ApiError.badRequest("Data out of range!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
             return;
         }
 

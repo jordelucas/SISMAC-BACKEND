@@ -7,6 +7,7 @@ import ValidDate from '../utils/ValidDate';
 import CheckEmptyFields from '../utils/CheckEmptyFields';
 import { AgendamentosRepository } from '../repositories/AgendamentoRepository';
 import { ApiError } from '../error/ApiError';
+import CheckNullColumns from '../utils/CheckNullColumn';
 
 class VagaConsultasController {
     async create(request: Request, response: Response, next: NextFunction) {
@@ -18,10 +19,16 @@ class VagaConsultasController {
             return;
         }
 
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
+            return;
+        }
+
         if (!ValidDate.isValidDate(request.body.dataConsulta)) {
             next(ApiError.badRequest("Data out of range!"));
             return;
         }
+
 
         const {
             nomeEspecialista,

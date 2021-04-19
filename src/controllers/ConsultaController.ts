@@ -5,13 +5,18 @@ import { VagaConsultasRepository } from '../repositories/VagaConsultasRepository
 
 import CheckEmptyFields from '../utils/CheckEmptyFields';
 import { ApiError } from '../error/ApiError';
+import CheckNullColumns from '../utils/CheckNullColumn';
 class ConsultaController {
     async create(request: Request, response: Response, next: NextFunction) {
-
         const resquestSize = Object.keys(request.body).length;
 
         if (CheckEmptyFields.check(request) || resquestSize < 1) {
             next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
             return;
         }
 

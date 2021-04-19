@@ -324,4 +324,24 @@ describe("vagasConsultas", () => {
         const vagasResponse = await request(app).get("/vagasConsultas/" + vagaConsulta.body.id);
         expect(vagasResponse.body.disponivel).toBe(3);
     })
+
+    it("should not create a Vaga of consulta if the column name is empty", async () => {
+        const consulta = await request(app).post("/consultas").send({
+            nome: "teste"
+        })
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const response = await request(app).post("/vagasConsultas").send({
+            "": "jose",
+            dataConsulta: date_string,
+            quantidade: 5,
+            local: "Cang",
+            consulta_id: consulta.body.id
+        });
+
+        expect(response.status).toBe(400);
+    })
 })

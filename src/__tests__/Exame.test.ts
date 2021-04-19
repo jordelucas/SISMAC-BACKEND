@@ -116,11 +116,13 @@ describe("exames", () => {
 
     it("Should not update a Exame the name value already exists", async () => {
         const exame = await request(app).post("/exames").send({
-            nome: "teste6"
+            nome: "teste6",
+            autorizacao: false
         });
 
         const response = await request(app).put("/exames/" + exame.body.id).send({
-            nome: "teste4"
+            nome: "teste4",
+            autorizacao: false
         });
 
         expect(response.status).toBe(400);
@@ -128,11 +130,22 @@ describe("exames", () => {
 
     it("should not create a Exame if your name has already been used with an insensitive case ", async () => {
         await request(app).post("/exames").send({
-            nome: "teste7"
+            nome: "teste7",
+            autorizacao: false
         });
 
         const response = await request(app).post("/exames").send({
-            nome: "Teste7"
+            nome: "Teste7",
+            autorizacao: false
+        });
+
+        expect(response.status).toBe(400);
+    })
+
+    it("should not create a Exame if the column name is empty", async () => {
+        const response = await request(app).post("/exames").send({
+            "": "teste",
+            autorizacao: true
         });
 
         expect(response.status).toBe(400);

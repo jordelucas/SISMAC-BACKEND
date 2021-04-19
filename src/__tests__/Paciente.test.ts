@@ -301,4 +301,19 @@ describe("pacientes", () => {
 
         expect(response2.status).toBe(400);
     })
+
+    it("should not create a Paciente if the column name is empty", async () => {
+        const response = await request(app).post("/pacientes").send({
+            "": "12312312266",
+            nsus: "11111111166",
+            nome: "Clev",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/50",
+            telefone: "8494984499"
+        });
+
+        expect(response.status).toBe(400);
+    })
 });
