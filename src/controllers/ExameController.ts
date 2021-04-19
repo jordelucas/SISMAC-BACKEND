@@ -4,6 +4,7 @@ import { ApiError } from "../error/ApiError";
 import { ExamesRepository } from "../repositories/ExamesRepository";
 
 import CheckEmptyFields from "../utils/CheckEmptyFields";
+import CheckNullColumns from "../utils/CheckNullColumn";
 class ExameController {
     async create(request: Request, response: Response, next: NextFunction) {
 
@@ -11,6 +12,11 @@ class ExameController {
 
         if (CheckEmptyFields.check(request) || resquestSize < 2) {
             next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
             return;
         }
 

@@ -141,4 +141,27 @@ describe("filaConsultas", () => {
         expect(response.status).toBe(404);
     })
 
+    it("should not create a Fila if the column name is empty", async () => {
+        const id = uuid();
+
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "123123123",
+            nsus: "111111111",
+            nome: "clev",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "25",
+            complemento: "casa",
+            dtNascimento: "1998/10/31",
+            telefone: "8494984499"
+        });
+
+        const response = await request(app).post("/filaConsultas").send({
+            "": paciente.body.id,
+            consulta_id: id
+        })
+
+        expect(response.status).toBe(400);
+    })
+
 })

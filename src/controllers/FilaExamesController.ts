@@ -6,6 +6,7 @@ import { ExamesRepository } from '../repositories/ExamesRepository';
 
 import CheckEmptyFields from '../utils/CheckEmptyFields';
 import { ApiError } from '../error/ApiError';
+import CheckNullColumns from '../utils/CheckNullColumn';
 class FilaExamesController {
     async create(request: Request, response: Response, next: NextFunction) {
 
@@ -13,6 +14,11 @@ class FilaExamesController {
 
         if (CheckEmptyFields.check(request) || resquestSize < 2) {
             next(ApiError.badRequest("there are not enough values!"));
+            return;
+        }
+
+        if (CheckNullColumns.check(request)) {
+            next(ApiError.badRequest("column not especified!"));
             return;
         }
 

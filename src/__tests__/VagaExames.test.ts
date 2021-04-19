@@ -199,7 +199,8 @@ describe("vagasExames", () => {
 
     it("Should not create a new VagaExames if any value is null", async () => {
         const exame = await request(app).post("/exame").send({
-            nome: "teste"
+            nome: "teste",
+            autorizacao: true
         })
 
         var date = new Date();
@@ -218,7 +219,8 @@ describe("vagasExames", () => {
 
     it("Should return 400 if date is out of range", async () => {
         const exame = await request(app).post("/exames").send({
-            nome: "teste"
+            nome: "teste",
+            autorizacao: true
         })
 
         var date_string = "2021/05/35";
@@ -336,5 +338,25 @@ describe("vagasExames", () => {
 
         const vagasResponse = await request(app).get("/vagasExames/" + vagaExame.body.id);
         expect(vagasResponse.body.disponivel).toBe(3);
+    })
+
+    it("should not create a Vaga of exame if the column name is empty", async () => {
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true
+        })
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        const response = await request(app).post("/vagasExames").send({
+            "": date_string,
+            quantidade: 5,
+            local: "Cang",
+            exame_id: exame.body.id
+        });
+
+        expect(response.status).toBe(400);
     })
 })
