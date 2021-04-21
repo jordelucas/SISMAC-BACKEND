@@ -4,7 +4,11 @@ import { app } from '../app';
 import { v4 as uuid } from "uuid";
 
 import createConnection from '../database';
+import FormatDate from '../utils/FormatDate';
+import { AgendamentoController } from '../controllers/AgendamentoController';
 let connection: Connection;
+
+const agendamentoController = new AgendamentoController();
 
 describe("pacientes", () => {
     beforeAll(async () => {
@@ -342,5 +346,46 @@ describe("pacientes", () => {
         });
 
         expect(response.status).toBe(400);
+    })
+
+    it("should be able to return all patient's schedules", async () => {
+        const paciente = await request(app).post("/pacientes").send({
+            cpf: "001001001",
+            nsus: "001",
+            nome: "jord",
+            cidade: "cang",
+            bairro: "sertãozinho",
+            numero: "20",
+            complemento: "casa",
+            dtNascimento: "1998/10/30",
+            telefone: "8489498494"
+        });
+
+        const exame = await request(app).post("/exames").send({
+            nome: "teste",
+            autorizacao: true
+        });
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        var date_string = FormatDate.format(date);
+
+        await request(app).post("/vagasExames").send({
+            dataExame: date_string,
+            quantidade: 5,
+            local: "Cang",
+            exame_id: exame.body.id
+        });
+
+        await request(app).post("/filaExames").send({
+            paciente_id: paciente.body.id,
+            exame_id: exame.body.id
+        })
+
+        await agendamentoController.toSchedule();
+
+        const schedules = await request(app).get(`/pacientes/${paciente.body.id}/agendamentos`);
+
+        expect(schedules.body.length).toBe(1);        
     })
 });
