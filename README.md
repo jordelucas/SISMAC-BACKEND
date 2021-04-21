@@ -59,15 +59,21 @@ Funcionário:
 
 **[GET]**     `/pacientes/:id` 
 
+**[GET]**     `/pacientes/:id/agendamentos`
+
 **[PUT]**     `/pacientes/:id` 
 
-**[DELETE]**     `/pacientes/:id`
+**[DELETE]**  `/pacientes/:id`
 
-**[POST]**     `/exames` 
+**[POST]**    `/exames` 
 
 **[GET]**     `/exames` 
 
 **[GET]**     `/exames/:id` 
+
+**[GET]**     `/exames/:id/vagas` 
+
+**[PUT]**     `/exames/:id` 
 
 **[POST]**     `/consultas` 
 
@@ -75,6 +81,26 @@ Funcionário:
 
 **[GET]**     `/consultas/:id` 
 
-**[POST]**     `/vagas` 
+**[GET]**     `/consultas/:id/vagas` 
 
-**[POST]**     `/agendamento` 
+**[PUT]**     `/consultas/:id`
+
+**[POST]**     `/vagasExames`
+
+**[GET]**     `/vagasExames`
+
+**[GET]**     `/vagasExames/:id`
+
+**[GET]**     `/vagasExames/:id/agendamentos`
+
+**[POST]**     `/vagasConsultas` 
+
+**[GET]**     `/vagasConsultas`
+
+**[GET]**     `/vagasConsultas/:id`
+
+**[GET]**     `/vagasConsultas/:id/agendamentos`
+
+**[POST]**     `/filaConsultas` 
+
+**[POST]**     `/filaExames`

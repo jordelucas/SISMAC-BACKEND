@@ -129,7 +129,12 @@ class VagaExamesController {
         const vagaExamesRepository = getCustomRepository(VagaExamesRepository);
 
         const filteredVagasExame = await vagaExamesRepository.find({
-            exame_id: IDExameRequest
+            where: {
+                exame_id: IDExameRequest
+            },
+            order: {
+                dataExame: "ASC"
+            }
         })
 
         return response.status(200).json(filteredVagasExame);
