@@ -18,9 +18,9 @@ module.exports = [
         }
     },
     {
-        "name": "test",
+        "name": "postgres",
         "type": "postgres",
-        "url": "postgres://test:test@localhost:5432/test",
+        "url": "postgres://postgres:postgres@localhost:5432/postgres",
         "synchronize": false,
         "dropSchema": true,
         "logging": false,
